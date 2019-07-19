@@ -4,7 +4,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/shaoxing?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: root
-
   redis:
     database: 0
     host: 127.0.0.1
@@ -17,4 +16,12 @@ spring:
         max-idle: 5
         min-idle: 0
     timeout: 10000
+
+server:
+  port: 8080
+
+systemParam:
+  user:
+    name_min_length: 6
+    password_length: 32
 
