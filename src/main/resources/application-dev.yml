@@ -27,4 +27,11 @@ systemParam:
   user:
     name_min_length: 6
     password_length: 32
+    imagefile:
+      path: "D:\\shaoxing\\image\\"
+      max_name: 80
 
+
+multipart:
+  maxFileSize: 5242880
+  maxRequestSize: 5242880

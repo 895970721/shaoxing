@@ -1,15 +1,20 @@
 package com.nhxy.sxs.demo.controller;
 
+import com.nhxy.sxs.demo.entity.TokenEntity;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.ExpTime;
+import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.UserServiceImpl;
-import com.nhxy.sxs.demo.utils.TokenUtil;
+import com.nhxy.sxs.demo.utils.CheckToken;
+import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * <p>Class: UserController</p>
@@ -26,7 +31,7 @@ public class UserController {
     UserServiceImpl userService;
 
     @Autowired
-    TokenUtil tokenUtil;
+    UserTokenUtilImpl tokenUtil;
 
     @PostMapping("/register")
     public BaseResponse register(@RequestParam("user_name") String username,
@@ -46,13 +51,34 @@ public class UserController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-        BaseResponse baseResponse=userService.login(user);
-        if(baseResponse.getCode()==1){
-            Cookie cookie=new Cookie("token",tokenUtil.create(user, ExpTime.OneDay).getToken());
+        BaseResponse baseResponse = userService.login(user);
+        if (baseResponse.getCode() == 1) {//创建token 封装进cookie；
+            Cookie cookie = new Cookie("token", tokenUtil.create(user, ExpTime.OneDay).getToken());
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             response.addCookie(cookie);
         }
         return baseResponse;
+    }
+
+    @CheckToken(type = CheckToken.user_tpye)
+    @PostMapping("/uploadimage")
+    public BaseResponse uploadImage(@RequestParam() MultipartFile file, @CookieValue("token") Cookie token) {
+        BaseResponse response;
+        TokenEntity tokenEntity = tokenUtil.getTokenEntity(token.getValue());
+        User user = userService.selectByUserName(tokenEntity.getUsername());
+        if (userService.updateImageByPrimaryKey(user, file) == 1) {
+            response = new BaseResponse(StatusCode.Success);
+            response.setMsg("图片上传成功");
+            return response;
+        } else {
+            return new BaseResponse(StatusCode.Fail);
+        }
+    }
+    @CheckToken
+    @GetMapping(value = "/getpicture", produces = "image/png")
+    public byte[] getImage(@CookieValue("token") Cookie token){
+        User user=tokenUtil.getUser(token.getValue());
+        return userService.getImage(user);
     }
 }
