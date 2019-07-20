@@ -9,4 +9,7 @@ public class Famous {
     private String title;
 
     private String filename;
+
+    private String pic_url;
+
 }

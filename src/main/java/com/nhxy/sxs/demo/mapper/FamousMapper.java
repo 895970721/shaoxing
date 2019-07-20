@@ -1,5 +1,6 @@
 package com.nhxy.sxs.demo.mapper;
 
+import com.nhxy.sxs.demo.dto.FamousDTO;
 import com.nhxy.sxs.demo.entity.Famous;
 
 
@@ -21,5 +22,5 @@ public interface FamousMapper {
 
     List<Famous> getAllFamous();
 
-    List<Famous> getAllFamousByPage(int page_num,int page_size);
+    List<FamousDTO> getAllFamousByPage(int page_num, int page_size);
 }

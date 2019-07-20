@@ -5,9 +5,10 @@
     <id column="Id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="filename" property="filename" jdbcType="VARCHAR" />
+    <result column="pic_url" property="pic_url" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, title, filename
+    Id, title, filename, pic_url
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,9 +24,9 @@
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.Famous" >
-    insert into famous (Id, title, filename
+    insert into famous (Id, title, filename, pic_url
       )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, #{pic_url,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.Famous" >
@@ -40,6 +41,9 @@
       <if test="filename != null" >
         filename,
       </if>
+      <if test="pic_url != null" >
+        pic_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -50,6 +54,9 @@
       </if>
       <if test="filename != null" >
         #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="pic_url != null" >
+        #{pri_url,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -62,13 +69,17 @@
       <if test="filename != null" >
         filename = #{filename,jdbcType=VARCHAR},
       </if>
+      <if test="pic_url != null" >
+        pic_url = #{pic_url,jdbcType=VARCHAR},
+      </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nhxy.sxs.demo.entity.Famous" >
     update famous
     set title = #{title,jdbcType=VARCHAR},
-      filename = #{filename,jdbcType=VARCHAR}
+      filename = #{filename,jdbcType=VARCHAR},
+      pic_url = #{pic_url,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

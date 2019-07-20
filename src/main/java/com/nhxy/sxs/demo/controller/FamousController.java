@@ -1,5 +1,6 @@
 package com.nhxy.sxs.demo.controller;
 
+import com.nhxy.sxs.demo.dto.FamousDTO;
 import com.nhxy.sxs.demo.entity.Famous;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
@@ -19,13 +20,13 @@ public class FamousController {
     /**
      *查询所有名人
      */
-    @GetMapping(value = "/getAllFamous")
+    @GetMapping(value = "/getAllFamousByPage")
     public BaseResponse getAllFamousByPage
     (@RequestParam("page_num") Integer page_num,
      @RequestParam("page_size") Integer page_size)
     {
         BaseResponse response = new BaseResponse(StatusCode.Success);
-        List<Famous> list = famousService.getAllFamousByPage(page_num,page_size);
+        List<FamousDTO> list = famousService.getAllFamousByPage(page_num,page_size);
         response.setData(list);
         return response;
     }
