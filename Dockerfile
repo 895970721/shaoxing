@@ -3,5 +3,5 @@ VOLUME /tmp
 ARG JAR_FILE
 ARG PORT
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["/usr/bin/java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 EXPOSE ${PORT}
