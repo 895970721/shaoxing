@@ -2,31 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.nhxy.sxs.demo.mapper.HomePageMapper" >
   <resultMap id="BaseResultMap" type="com.nhxy.sxs.demo.entity.HomePage" >
-    <constructor >
-      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="filename" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="city_type" property="cityType" jdbcType="INTEGER" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="city_content" property="cityContent" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, type, name, filename
+    Id, city_type, city_name, city_content
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from home_page
     where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from home_page
+    where city_type = #{cityType,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from home_page
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.HomePage" >
-    insert into home_page (Id, type, name, 
-      filename)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{filename,jdbcType=VARCHAR})
+    insert into home_page (Id, city_type, city_name,
+      city_content)
+    values (#{id,jdbcType=INTEGER}, #{cityType,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR},
+      #{cityContent,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.HomePage" >
     insert into home_page
@@ -34,51 +37,51 @@
       <if test="id != null" >
         Id,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="cityType != null" >
+        city_type,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="cityName != null" >
+        city_name,
       </if>
-      <if test="filename != null" >
-        filename,
+      <if test="cityContent != null" >
+        city_content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="cityType != null" >
+        #{cityType,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
       </if>
-      <if test="filename != null" >
-        #{filename,jdbcType=VARCHAR},
+      <if test="cityContent != null" >
+        #{cityContent,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.nhxy.sxs.demo.entity.HomePage" >
     update home_page
     <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="cityType != null" >
+        city_type = #{cityType,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
       </if>
-      <if test="filename != null" >
-        filename = #{filename,jdbcType=VARCHAR},
+      <if test="cityContent != null" >
+        city_content = #{cityContent,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nhxy.sxs.demo.entity.HomePage" >
     update home_page
-    set type = #{type,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      filename = #{filename,jdbcType=VARCHAR}
+    set city_type = #{cityType,jdbcType=INTEGER},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      city_content = #{cityContent,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

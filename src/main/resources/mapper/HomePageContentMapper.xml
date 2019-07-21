@@ -2,15 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.nhxy.sxs.demo.mapper.HomePageContentMapper" >
   <resultMap id="BaseResultMap" type="com.nhxy.sxs.demo.entity.HomePageContent" >
-    <constructor >
-      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="small_title" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="small_title_content" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="city_type" property="cityType" jdbcType="INTEGER" />
+    <result column="small_title" property="smallTitle" jdbcType="VARCHAR" />
+    <result column="small_title_content" property="smallTitleContent" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, type, small_title, small_title_content
+    Id, city_type, small_title, small_title_content
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -18,14 +16,19 @@
     from home_page_content
     where Id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByCityType" parameterType="java.lang.Integer"  resultMap="BaseResultMap" >
+    select *
+    from home_page_content
+    where city_type = #{cityType,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from home_page_content
     where Id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.HomePageContent" >
-    insert into home_page_content (Id, type, small_title, 
+    insert into home_page_content (Id, city_type, small_title, 
       small_title_content)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{smallTitle,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{cityType,jdbcType=INTEGER}, #{smallTitle,jdbcType=VARCHAR}, 
       #{smallTitleContent,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.HomePageContent" >
@@ -34,8 +37,8 @@
       <if test="id != null" >
         Id,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="cityType != null" >
+        city_type,
       </if>
       <if test="smallTitle != null" >
         small_title,
@@ -48,8 +51,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="cityType != null" >
+        #{cityType,jdbcType=INTEGER},
       </if>
       <if test="smallTitle != null" >
         #{smallTitle,jdbcType=VARCHAR},
@@ -62,8 +65,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.nhxy.sxs.demo.entity.HomePageContent" >
     update home_page_content
     <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="cityType != null" >
+        city_type = #{cityType,jdbcType=INTEGER},
       </if>
       <if test="smallTitle != null" >
         small_title = #{smallTitle,jdbcType=VARCHAR},
@@ -76,7 +79,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nhxy.sxs.demo.entity.HomePageContent" >
     update home_page_content
-    set type = #{type,jdbcType=INTEGER},
+    set city_type = #{cityType,jdbcType=INTEGER},
       small_title = #{smallTitle,jdbcType=VARCHAR},
       small_title_content = #{smallTitleContent,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}

@@ -3,22 +3,11 @@ package com.nhxy.sxs.demo.entity;
 public class HomePage {
     private Integer id;
 
-    private Integer type;
+    private Integer cityType;
 
-    private String name;
+    private String cityName;
 
-    private String filename;
-
-    public HomePage(Integer id, Integer type, String name, String filename) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.filename = filename;
-    }
-
-    public HomePage() {
-        super();
-    }
+    private String cityContent;
 
     public Integer getId() {
         return id;
@@ -28,27 +17,27 @@ public class HomePage {
         this.id = id;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getCityType() {
+        return cityType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setCityType(Integer cityType) {
+        this.cityType = cityType;
     }
 
-    public String getName() {
-        return name;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setCityName(String cityName) {
+        this.cityName = cityName == null ? null : cityName.trim();
     }
 
-    public String getFilename() {
-        return filename;
+    public String getCityContent() {
+        return cityContent;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename == null ? null : filename.trim();
+    public void setCityContent(String cityContent) {
+        this.cityContent = cityContent == null ? null : cityContent;
     }
 }

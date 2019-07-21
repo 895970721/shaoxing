@@ -1,5 +1,6 @@
 package com.nhxy.sxs.demo.mapper;
 
+import com.nhxy.sxs.demo.dto.HomePageDTO;
 import com.nhxy.sxs.demo.entity.HomePage;
 
 public interface HomePageMapper {
@@ -14,4 +15,8 @@ public interface HomePageMapper {
     int updateByPrimaryKeySelective(HomePage record);
 
     int updateByPrimaryKey(HomePage record);
+
+    HomePage selectByType(Integer type);
+
+    HomePageDTO getCity(Integer type);
 }

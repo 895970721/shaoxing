@@ -3,22 +3,11 @@ package com.nhxy.sxs.demo.entity;
 public class HomePageContent {
     private Integer id;
 
-    private Integer type;
+    private Integer cityType;
 
     private String smallTitle;
 
     private String smallTitleContent;
-
-    public HomePageContent(Integer id, Integer type, String smallTitle, String smallTitleContent) {
-        this.id = id;
-        this.type = type;
-        this.smallTitle = smallTitle;
-        this.smallTitleContent = smallTitleContent;
-    }
-
-    public HomePageContent() {
-        super();
-    }
 
     public Integer getId() {
         return id;
@@ -28,12 +17,12 @@ public class HomePageContent {
         this.id = id;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getCityType() {
+        return cityType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setCityType(Integer cityType) {
+        this.cityType = cityType;
     }
 
     public String getSmallTitle() {
