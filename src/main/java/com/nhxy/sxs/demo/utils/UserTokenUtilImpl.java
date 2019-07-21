@@ -26,6 +26,7 @@ import java.util.Date;
  * @version 1.0.0
  * @since 2019/7/17 23:37
  */
+
 @Component
 public class UserTokenUtilImpl implements TokenUtil {
 

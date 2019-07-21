@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhxy.sxs</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <docker.image.prefix>nhxy.sxs</docker.image.prefix>
+        <port>8080</port>
     </properties>
 
     <dependencies>
@@ -126,10 +127,11 @@
                 </executions>
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
+                    <tag>latest</tag>
                     <buildArgs>
                         <!--提供参数向Dockerfile传递-->
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                        <PORT>${port}</PORT>
                     </buildArgs>
                 </configuration>
             </plugin>
@@ -148,7 +150,9 @@
                     <execution>
                         <id>Generate MyBatis Artifacts</id>
                         <goals>
+                            <!--
                             <goal>generate</goal>
+                            -->
                         </goals>
                     </execution>
                 </executions>

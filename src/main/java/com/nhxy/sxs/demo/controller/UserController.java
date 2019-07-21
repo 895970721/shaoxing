@@ -45,7 +45,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public BaseResponse login(HttpServletResponse response, @RequestParam("user_name") String username,
                               @RequestParam("pwd") String password) throws Exception {
         User user = new User();

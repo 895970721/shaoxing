@@ -18,7 +18,8 @@ spring:
     timeout: 10000
 
 server:
-  port: 8080
+  port: "@port@"
+  #从pom中取出port号
 
 file:
   content: "D:\\shaoxing\\famous_content\\"

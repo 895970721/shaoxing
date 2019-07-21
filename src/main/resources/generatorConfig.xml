@@ -103,6 +103,7 @@
 
         <!--tables-->
 
+
         <table tableName="picture" domainObjectName="Picture"
 
                enableCountByExample="false" enableUpdateByExample="false"
@@ -113,34 +114,7 @@
 
         </table>
 
-        <table tableName="view" domainObjectName="View"
 
-               enableCountByExample="false" enableUpdateByExample="false"
-
-               enableDeleteByExample="false" enableSelectByExample="false"
-
-               selectByExampleQueryId="false">
-
-        </table>
-
-        <table tableName="home_page" domainObjectName="HomePage"
-
-               enableCountByExample="false" enableUpdateByExample="false"
-
-               enableDeleteByExample="false" enableSelectByExample="false"
-
-               selectByExampleQueryId="false">
-
-        </table>
-        <table tableName="home_page_content" domainObjectName="HomePageContent"
-
-               enableCountByExample="false" enableUpdateByExample="false"
-
-               enableDeleteByExample="false" enableSelectByExample="false"
-
-               selectByExampleQueryId="false">
-
-        </table>
     </context>
 
 </generatorConfiguration>
