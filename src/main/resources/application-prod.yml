@@ -6,4 +6,4 @@ spring:
     password: root
 
 file:
-  content: "//home//shaoxing//file_content//"
+  content: "/home/shaoxing/file_content/"
