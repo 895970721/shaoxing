@@ -30,3 +30,4 @@ systemParam:
     imagefile:
       path: "/home/shaoxing/image/"
       max_name: 80
+
