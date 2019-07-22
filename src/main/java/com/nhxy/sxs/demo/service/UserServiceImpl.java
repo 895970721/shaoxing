@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserMapper {
         if (file.getOriginalFilename().length() < 80) {
 
         }
-        File image = new File(pathname + "\\" + file.getOriginalFilename());
+        File image = new File(pathname  + file.getOriginalFilename());
         if (!image.exists()) {
             //先得到文件的上级目录，并创建上级目录，在创建文件
             image.getParentFile().mkdir();
