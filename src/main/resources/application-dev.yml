@@ -16,7 +16,6 @@ spring:
         max-idle: 5
         min-idle: 0
     timeout: 10000
-
 server:
   port: "@port@"
   #从pom中取出port号
