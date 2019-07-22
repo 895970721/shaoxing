@@ -26,7 +26,7 @@ file:
 systemParam:
   user:
     name_min_length: 6
-    password_length: 32
+    password_max_length: 32
     imagefile:
       path: "D:\\shaoxing\\image\\"
       max_name: 80

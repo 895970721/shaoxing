@@ -2,6 +2,8 @@ package com.nhxy.sxs.demo.mapper;
 
 import com.nhxy.sxs.demo.entity.Comment;
 
+import java.util.List;
+
 public interface CommentMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,10 @@ public interface CommentMapper {
     int insertSelective(Comment record);
 
     Comment selectByPrimaryKey(Integer id);
+
+    List<Comment> selectByViewId(Integer viewId);
+
+    Comment selectByUserIdAndViewId(Integer userId,Integer viewId);
 
     int updateByPrimaryKeySelective(Comment record);
 

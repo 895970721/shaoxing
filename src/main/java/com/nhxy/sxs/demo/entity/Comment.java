@@ -15,6 +15,14 @@ public class Comment {
 
     private Date createTime;
 
+    public Comment( String content, Integer star, Integer userId, Integer viewId, Date createTime) {
+        this.content = content;
+        this.star = star;
+        this.userId = userId;
+        this.viewId = viewId;
+        this.createTime = createTime;
+    }
+
     public Comment(Integer id, String content, Integer star, Integer userId, Integer viewId, Date createTime) {
         this.id = id;
         this.content = content;

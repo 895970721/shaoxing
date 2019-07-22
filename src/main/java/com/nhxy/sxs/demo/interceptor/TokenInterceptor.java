@@ -8,6 +8,7 @@ package com.nhxy.sxs.demo.interceptor;
  * @since 2019/7/19 15:11
  */
 
+import com.alibaba.fastjson.JSONObject;
 import com.nhxy.sxs.demo.enums.ExpTime;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.utils.CheckToken;
@@ -121,7 +122,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         try {
             writer = response.getWriter();
-            writer.print(resultJson.toString());
+            writer.print(JSONObject.toJSONString(resultJson));
         } catch (IOException e) {
             logger.error("response error",e);
         } finally {

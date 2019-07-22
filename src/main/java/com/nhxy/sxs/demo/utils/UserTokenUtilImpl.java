@@ -82,7 +82,7 @@ public class UserTokenUtilImpl implements TokenUtil {
     @Override
     public boolean isExpire(String token) {
         TokenEntity tokenEntity = getTokenEntity(token);
-        return tokenEntity.getExpiresDate().after(new Date());
+        return tokenEntity.getExpiresDate().before(new Date());
     }
 
 
@@ -90,7 +90,7 @@ public class UserTokenUtilImpl implements TokenUtil {
     public String reSign(String token, ExpTime expTime) {
         TokenEntity tokenEntity = getTokenEntity(token);
         User user = userMapper.selectByUserName(tokenEntity.getUsername());
-        if ((tokenEntity.getCreateDate().getTime() + 2592000000L) > System.currentTimeMillis()) {//即使超过了create时间一个月
+        if ((tokenEntity.getCreateDate().getTime() + 2592000000L) > System.currentTimeMillis()) {//如果超过了create时间一个月，那么不会重签 返回null
             return create0(user, tokenEntity, expTime).getToken();
         } else {
             return null;

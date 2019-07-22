@@ -4,6 +4,8 @@ import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.mapper.UserMapper;
 import com.nhxy.sxs.demo.response.BaseResponse;
+import com.nhxy.sxs.demo.utils.MD5Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.io.*;
  * @version 1.0.0
  * @since 2019/7/18 18:27
  */
+
+@Slf4j
 @Service
 public class UserServiceImpl implements UserMapper {
 
@@ -26,8 +30,8 @@ public class UserServiceImpl implements UserMapper {
 
     @Value("${systemParam.user.name_min_length}")
     int usernameMinLength;
-    @Value("${systemParam.user.password_length}")
-    int passwordLength;
+    @Value("${systemParam.user.password_max_length}")
+    int passwordMaxLength;
 
 
     @Override
@@ -81,7 +85,7 @@ public class UserServiceImpl implements UserMapper {
             baseResponse.setMsg("用户名长度过短");
             return baseResponse;
         }
-        if (user.getPassword().length() != passwordLength) {
+        if (user.getPassword().length() > passwordMaxLength) {
             baseResponse = new BaseResponse(StatusCode.Fail);
             baseResponse.setMsg("密码长度错误");
             return baseResponse;
@@ -91,6 +95,7 @@ public class UserServiceImpl implements UserMapper {
             baseResponse.setMsg("用户名重复，请重试");
             return baseResponse;
         }
+        user.setPassword(MD5Util.encode(user.getPassword()));//MD5加密
         userMapper.insertSelective(user);
         return new BaseResponse(StatusCode.Success);
     }
@@ -103,7 +108,7 @@ public class UserServiceImpl implements UserMapper {
             baseResponse.setMsg("用户名错误");
             return baseResponse;
         }
-        if (!user.getPassword().equals(userFormDB.getPassword())) {//密码不匹配
+        if (!MD5Util.encode(user.getPassword()).equals(userFormDB.getPassword())) {//密码不匹配
             baseResponse = new BaseResponse(StatusCode.Fail);
             baseResponse.setMsg("密码错误");
             return baseResponse;
@@ -126,7 +131,7 @@ public class UserServiceImpl implements UserMapper {
                 //创建文件
                 image.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.toString()+"图片文件创建错误");
             }
         }
         FileOutputStream os=null;
@@ -134,14 +139,14 @@ public class UserServiceImpl implements UserMapper {
             os=new FileOutputStream(image);
             os.write(file.getBytes());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } finally {
             try {
                 os.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         }
         record.setFileName(image.getPath());
@@ -157,15 +162,15 @@ public class UserServiceImpl implements UserMapper {
             imageByte=new byte[is.available()];
             is.read(imageByte);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
         finally {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         }
         return imageByte;
