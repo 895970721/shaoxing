@@ -85,10 +85,26 @@ public class UserController {
         }
     }
 
+    /**
+     * 通过用户携带的token返回头像
+     * @param token
+     * @return
+     */
     @CheckToken
     @GetMapping(value = "/getpicture", produces = "image/png")
     public byte[] getImage(@CookieValue("token") Cookie token) {
         User user = tokenUtil.getUser(token.getValue());
+        return userService.getImage(user);
+    }
+
+    /**
+     * 通过userid返回接口
+     * @param userId
+     * @return
+     */
+    @GetMapping(value = "/getpicture/{user_id}", produces = "image/png")
+    public byte[] getImage(@PathVariable("user_id") Integer userId) {
+        User user = userService.selectByPrimaryKey(userId);
         return userService.getImage(user);
     }
 }

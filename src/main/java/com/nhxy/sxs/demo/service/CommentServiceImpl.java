@@ -1,12 +1,15 @@
 package com.nhxy.sxs.demo.service;
 
 import com.github.pagehelper.PageHelper;
+import com.nhxy.sxs.demo.dto.CommentDTO;
 import com.nhxy.sxs.demo.entity.Comment;
 import com.nhxy.sxs.demo.mapper.CommentMapper;
+import com.nhxy.sxs.demo.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,6 +25,9 @@ public class CommentServiceImpl implements CommentMapper {
 
     @Autowired
     CommentMapper commentMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -77,10 +83,21 @@ public class CommentServiceImpl implements CommentMapper {
         return true;
     }
 
-    public List<Comment> getList(int viewId, int pageNum, int pageSize) {
+    public List<CommentDTO> getList(int viewId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Comment> commentList = selectByViewId(viewId);
-        return commentList;
+        List<CommentDTO> commentDTOList = new LinkedList<>();
+        for (Comment comment : commentList) {
+            int userId=comment.getUserId();
+            CommentDTO commentDTO = new CommentDTO(comment.getContent(),
+                    comment.getStar(),
+                    userMapper.selectByPrimaryKey(userId).getUsername(),
+                    "/user/getpicture/"+userId,
+                    comment.getViewId(),
+                    comment.getCreateTime());
+            commentDTOList.add(commentDTO);
+        }
+        return commentDTOList;
 
     }
 }
