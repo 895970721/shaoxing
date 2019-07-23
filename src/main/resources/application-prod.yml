@@ -22,6 +22,7 @@ server:
 
 file:
   content: "/home/shaoxing/file_content/"
+  viewFileAddress: "/home/shaoxing/view/"
 
 systemParam:
   user:

@@ -22,7 +22,7 @@ server:
 
 file:
   content: "D:\\shaoxing\\famous_content\\"
-
+  viewFileAddress: "D:\\shaoxing\\view\\"
 systemParam:
   user:
     name_min_length: 6

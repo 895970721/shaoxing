@@ -1,5 +1,8 @@
 package com.nhxy.sxs.demo.entity;
 
+import lombok.Data;
+
+@Data
 public class Picture {
     private Integer id;
 
