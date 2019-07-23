@@ -87,6 +87,7 @@ public class UserController {
 
     /**
      * 通过用户携带的token返回头像
+     * 推荐个人中心使用此接口
      * @param token
      * @return
      */

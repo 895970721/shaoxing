@@ -14,11 +14,13 @@ import java.lang.annotation.Target;
  * @version 1.0.0
  * @since 2019/7/17 22:05
  */
-@Target({ElementType.METHOD,ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckToken {
-    final static int user_tpye=1;
-    final static int admin_tpye=2;//fatrue 用户类型
+    final static int user_tpye = 1;
+    final static int admin_tpye = 2;//fatrue 用户类型
+
     boolean required() default true;
+
     int type() default user_tpye;
 }

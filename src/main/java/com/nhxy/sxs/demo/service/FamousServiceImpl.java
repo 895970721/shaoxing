@@ -14,13 +14,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-public class FamousServiceImpl implements FamousMapper{
+public class FamousServiceImpl implements FamousMapper {
 
     @Value("${file.content}")
     private String file_content;
@@ -42,17 +41,17 @@ public class FamousServiceImpl implements FamousMapper{
         //返回DTO列表
         List<FamousDTO> FamousDTO_list = new ArrayList<FamousDTO>();
         //读取本地文件数据,一次读取三个Famous对象
-        for(int i=0;i<page_size;i++){
+        for (int i = 0; i < page_size; i++) {
             //将Famous对象转换成String字符串,调用对象toString()方法
             String str = String.valueOf(Famous_list.get(i));
             //调用工具类,返回文件名
-            String FileName = StringUtils.StringToArrayGetContent(str,2,10);
+            String FileName = StringUtils.StringToArrayGetContent(str, 2, 10);
             //定义DTO返回的文件内容
             String FileContent = null;
-            FileContent = FileIOUtils.getFileContent(file_content,FileName);
+            FileContent = FileIOUtils.getFileContent(file_content, FileName);
             //PO->DTO
             FamousDTO famousDTO = new FamousDTO();
-            BeanUtils.copyProperties(Famous_list.get(i),famousDTO);
+            BeanUtils.copyProperties(Famous_list.get(i), famousDTO);
             famousDTO.setFile_content(FileContent);
             FamousDTO_list.add(famousDTO);
         }
@@ -62,7 +61,7 @@ public class FamousServiceImpl implements FamousMapper{
     }
 
     @Override
-    public List<Famous> getAllFamous(){
+    public List<Famous> getAllFamous() {
         return famousMapper.getAllFamous();
     }
 }

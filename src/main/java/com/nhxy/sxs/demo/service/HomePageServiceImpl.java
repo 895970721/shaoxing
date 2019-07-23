@@ -50,16 +50,16 @@ public class HomePageServiceImpl implements HomePageMapper {
     }
 
     @Override
-    public HomePage selectByType(Integer type){
+    public HomePage selectByType(Integer type) {
         return homePageMapper.selectByType(type);
     }
 
     @Override
-    public HomePageDTO getCity(Integer type){
+    public HomePageDTO getCity(Integer type) {
         HomePage homePage = homePageMapper.selectByType(type);
         List<HomePageContent> list = homePageContentService.selectByCityType(type);
         HomePageDTO homePageDTO = new HomePageDTO();
-        BeanUtils.copyProperties(homePage,homePageDTO);
+        BeanUtils.copyProperties(homePage, homePageDTO);
         homePageDTO.setSubTitleList(list);
         return homePageDTO;
     }

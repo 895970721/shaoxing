@@ -1,7 +1,6 @@
 package com.nhxy.sxs.demo.controller;
 
 import com.nhxy.sxs.demo.dto.HomePageDTO;
-
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.HomePageServiceImpl;
@@ -19,11 +18,12 @@ public class HomePageController {
     /**
      * 获取城市信息
      * type:1为古城,2为水城,3为名城
+     *
      * @param type
      * @return
      */
     @GetMapping(value = "getCity")
-    public BaseResponse getCity(@RequestParam("city_type") Integer type){
+    public BaseResponse getCity(@RequestParam("city_type") Integer type) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         HomePageDTO homePageDTO = homePageService.getCity(type);
         response.setData(homePageDTO);

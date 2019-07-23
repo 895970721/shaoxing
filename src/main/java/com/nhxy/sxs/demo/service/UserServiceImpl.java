@@ -73,8 +73,7 @@ public class UserServiceImpl implements UserMapper {
      * 用户注册服务
      * 判断字段合法性
      *
-     * @param user
-     * @return
+     * @param user 实体类
      */
 
     public BaseResponse register(User user) {
@@ -123,7 +122,7 @@ public class UserServiceImpl implements UserMapper {
         if (file.getOriginalFilename().length() < 80) {
 
         }
-        File image = new File(pathname  + file.getOriginalFilename());
+        File image = new File(pathname + file.getOriginalFilename());
         if (!image.exists()) {
             //先得到文件的上级目录，并创建上级目录，在创建文件
             image.getParentFile().mkdir();
@@ -131,12 +130,12 @@ public class UserServiceImpl implements UserMapper {
                 //创建文件
                 image.createNewFile();
             } catch (IOException e) {
-                log.error(e.toString()+"图片文件创建错误");
+                log.error(e.toString() + "图片文件创建错误");
             }
         }
-        FileOutputStream os=null;
+        FileOutputStream os = null;
         try {
-            os=new FileOutputStream(image);
+            os = new FileOutputStream(image);
             os.write(file.getBytes());
         } catch (FileNotFoundException e) {
             log.error(e.toString());
@@ -153,20 +152,19 @@ public class UserServiceImpl implements UserMapper {
         return updateByPrimaryKeySelective(record);
     }
 
-    public byte[] getImage(User user){
-        File image=new File(user.getFileName());
-        FileInputStream is=null;
-        byte[] imageByte=null;
+    public byte[] getImage(User user) {
+        File image = new File(user.getFileName());
+        FileInputStream is = null;
+        byte[] imageByte = null;
         try {
-            is=new FileInputStream(image);
-            imageByte=new byte[is.available()];
+            is = new FileInputStream(image);
+            imageByte = new byte[is.available()];
             is.read(imageByte);
         } catch (FileNotFoundException e) {
             log.error(e.toString());
         } catch (IOException e) {
             log.error(e.toString());
-        }
-        finally {
+        } finally {
             try {
                 is.close();
             } catch (IOException e) {

@@ -18,7 +18,7 @@ public class CommentDTO {
 
     private Integer star;
 
-    private String  username;
+    private String username;
 
     private String picturePath;
 
@@ -29,12 +29,13 @@ public class CommentDTO {
     public CommentDTO() {
 
     }
-    public CommentDTO(String content, Integer star,String  username,String picturePath,Integer viewId,Date createTime) {
-        this.content=content;
-        this.star=star;
-        this.username=username;
-        this.picturePath=picturePath;
-        this.viewId=viewId;
-        this.createTime=createTime;
+
+    public CommentDTO(String content, Integer star, String username, String picturePath, Integer viewId, Date createTime) {
+        this.content = content;
+        this.star = star;
+        this.username = username;
+        this.picturePath = picturePath;
+        this.viewId = viewId;
+        this.createTime = createTime;
     }
 }

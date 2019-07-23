@@ -15,7 +15,7 @@ public class ViewController {
     private ViewServiceImpl viewService;
 
     @PostMapping(value = "getAllView")
-    public List<ViewDTO> getAllView(){
+    public List<ViewDTO> getAllView() {
         return viewService.getALLViewDTO();
     }
 }

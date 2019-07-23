@@ -55,16 +55,16 @@ public class CommentController {
     }
 
     @GetMapping("/get_list")
-    public BaseResponse getList(@RequestParam("view_id")Integer viewId ,
-                                @RequestParam(name = "page_num",required = false,defaultValue = "1") Integer pageNum,
-                                @RequestParam(name = "page_size",required = false,defaultValue = "10") Integer pageSize){
+    public BaseResponse getList(@RequestParam("view_id") Integer viewId,
+                                @RequestParam(name = "page_num", required = false, defaultValue = "1") Integer pageNum,
+                                @RequestParam(name = "page_size", required = false, defaultValue = "10") Integer pageSize) {
 
-        if(viewId<0|pageNum<0|pageSize<0){//值范围 判断
+        if (viewId < 0 | pageNum < 0 | pageSize < 0) {//值范围 判断
             return new BaseResponse(StatusCode.Fail);
         }
         ;
-        BaseResponse baseResponse=new BaseResponse(StatusCode.Success);
-        baseResponse.setData(commentService.getList(viewId,pageNum,pageSize));
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        baseResponse.setData(commentService.getList(viewId, pageNum, pageSize));
         return baseResponse;
     }
 }

@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 /**
  * <p>Class: MD5Util</p>
  * 加盐md5
+ *
  * @author GodDai
  * @version 1.0.0
  * @since 2019/7/17 21:05

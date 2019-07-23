@@ -15,7 +15,7 @@ public class Comment {
 
     private Date createTime;
 
-    public Comment( String content, Integer star, Integer userId, Integer viewId, Date createTime) {
+    public Comment(String content, Integer star, Integer userId, Integer viewId, Date createTime) {
         this.content = content;
         this.star = star;
         this.userId = userId;

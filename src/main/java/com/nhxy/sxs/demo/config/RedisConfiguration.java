@@ -77,7 +77,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory jedisConnectionFactory ) {
+    public RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory jedisConnectionFactory) {
         //设置序列化
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
@@ -113,7 +113,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             }
 
             @Override
-            public void handleCacheEvictError(RuntimeException e, Cache cache, Object key)    {
+            public void handleCacheEvictError(RuntimeException e, Cache cache, Object key) {
                 lg.error("Redis occur handleCacheEvictError：key -> [{}]", key, e);
             }
 
@@ -128,18 +128,17 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     /**
      * 此内部类就是把yml的配置数据，进行读取，创建JedisConnectionFactory和JedisPool，以供外部类初始化缓存管理器使用
      * 不了解的同学可以去看@ConfigurationProperties和@Value的作用
-     *
      */
     @ConfigurationProperties
-    class DataJedisProperties{
+    class DataJedisProperties {
         @Value("${spring.redis.host}")
-        private  String host;
+        private String host;
         @Value("${spring.redis.password}")
-        private  String password;
+        private String password;
         @Value("${spring.redis.port}")
-        private  int port;
+        private int port;
         @Value("${spring.redis.timeout}")
-        private  int timeout;
+        private int timeout;
         @Value("${spring.redis.jedis.pool.max-idle}")
         private int maxIdle;
         @Value("${spring.redis.jedis.pool.max-wait}")
@@ -155,6 +154,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             factory.setPassword(password);
             return factory;
         }
+
         @Bean
         public JedisPool redisPoolFactory() {
             lg.info("JedisPool init successful，host -> [{}]；port -> [{}]", host, port);

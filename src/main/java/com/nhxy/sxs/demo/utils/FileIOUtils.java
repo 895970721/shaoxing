@@ -6,7 +6,7 @@ import java.io.*;
 
 @Slf4j
 public class FileIOUtils {
-    public static String getFileContent(String file_address,String FileName){
+    public static String getFileContent(String file_address, String FileName) {
         String FileContent = null;
         FileInputStream fis = null;
         InputStreamReader reader;
@@ -28,12 +28,12 @@ public class FileIOUtils {
             while ((lineText = bufferedReade.read()) != -1) {
                 sBuilder.append((char) lineText);
             }
-            FileContent = sBuilder.toString().replace(" ", "").replace("\n","\n\t\t\t\t");
+            FileContent = sBuilder.toString().replace(" ", "").replace("\n", "\n\t\t\t\t");
         } catch (FileNotFoundException e) {
             log.error("文件不存在或者文件不可读或者文件是目录");
         } catch (IOException e) {
             log.error("读取过程存在异常");
-        }finally {
+        } finally {
             try {
                 fis.close();
             } catch (IOException e) {

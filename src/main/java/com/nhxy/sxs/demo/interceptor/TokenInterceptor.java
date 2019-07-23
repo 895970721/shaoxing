@@ -50,29 +50,29 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
 
         //取到映射到的方法
-        HandlerMethod handlerMethod=(HandlerMethod) handler;
-        Method method=handlerMethod.getMethod();
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
 
         //如果此方法有checktoken注解
-        if (method.isAnnotationPresent(CheckToken.class)){
+        if (method.isAnnotationPresent(CheckToken.class)) {
             //如果require值为ture
-            if (method.getAnnotation(CheckToken.class).required()){
+            if (method.getAnnotation(CheckToken.class).required()) {
                 // 从 cookie中取出 token
                 Cookie[] cookies = request.getCookies();
-                if (cookies==null){
-                    returnJson(response,499,"您请先登录");
+                if (cookies == null) {
+                    returnJson(response, 499, "您请先登录");
                     logger.debug("此连接没有cookie");
                     return false;
                 }
-                String token=null;
-                for(Cookie cookie : cookies){
-                    if (cookie.getName().equals("token")){
-                        token=cookie.getValue();
+                String token = null;
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("token")) {
+                        token = cookie.getValue();
                     }
                 }
                 //如果没有token
-                if (token==null){
-                    returnJson(response,499,"您请先登录");
+                if (token == null) {
+                    returnJson(response, 499, "您请先登录");
                     logger.debug("此连接有cookie但是没有token");
                     return false;
                 }
@@ -81,22 +81,20 @@ public class TokenInterceptor implements HandlerInterceptor {
                 //如果token验证成功
                 if (tokenUtil.verifie(token)) {
                     return true;
-                }
-                else {
-                    if (tokenUtil.isExpire(token)){
-                        String newToken=tokenUtil.reSign(token, ExpTime.OneWeek);
-                        if (newToken==null)
+                } else {
+                    if (tokenUtil.isExpire(token)) {
+                        String newToken = tokenUtil.reSign(token, ExpTime.OneWeek);
+                        if (newToken == null)
                             return false;
-                        Cookie cookie=new Cookie("token",newToken);
+                        Cookie cookie = new Cookie("token", newToken);
                         cookie.setPath("/");
                         cookie.setHttpOnly(true);
                         cookie.setMaxAge(2592000);//过期一个月
                         response.addCookie(cookie);
                         logger.debug("续期token");
                         return true;
-                    }
-                    else {
-                        returnJson(response,498,"您可能已经长久未登录，请先登录");
+                    } else {
+                        returnJson(response, 498, "您可能已经长久未登录，请先登录");
                         logger.debug("拒绝请求");
                         return false;
                     }
@@ -110,8 +108,9 @@ public class TokenInterceptor implements HandlerInterceptor {
         else
             return true;
     }
-    private void returnJson(HttpServletResponse response, int code, String msg) throws Exception{
-        BaseResponse resultJson=new BaseResponse(code,msg);
+
+    private void returnJson(HttpServletResponse response, int code, String msg) throws Exception {
+        BaseResponse resultJson = new BaseResponse(code, msg);
         PrintWriter writer = null;
 
         response.setCharacterEncoding("UTF-8");
@@ -124,7 +123,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             writer = response.getWriter();
             writer.print(JSONObject.toJSONString(resultJson));
         } catch (IOException e) {
-            logger.error("response error",e);
+            logger.error("response error", e);
         } finally {
             if (writer != null)
                 writer.close();

@@ -12,7 +12,7 @@ public class FamousDTO {
 
     private String pic_url;
 
-    public FamousDTO(){
+    public FamousDTO() {
 
     }
 }

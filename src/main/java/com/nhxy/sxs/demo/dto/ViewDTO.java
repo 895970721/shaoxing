@@ -1,7 +1,6 @@
 package com.nhxy.sxs.demo.dto;
 
 import com.nhxy.sxs.demo.entity.Picture;
-import com.nhxy.sxs.demo.entity.View;
 import lombok.Data;
 
 import java.util.List;

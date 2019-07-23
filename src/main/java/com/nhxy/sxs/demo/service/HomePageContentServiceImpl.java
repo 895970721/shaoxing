@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class HomePageContentServiceImpl implements HomePageContentMapper{
+public class HomePageContentServiceImpl implements HomePageContentMapper {
 
     @Autowired
     private HomePageContentMapper homePageContentMapper;

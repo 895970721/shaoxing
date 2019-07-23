@@ -110,8 +110,7 @@ public class UserTokenUtilImpl implements TokenUtil {
             tokenEntity.setExpiresDate(expTime.getExp());
             tokenEntity.setUsername(role.getUsername());
             tokenEntity.setToken(token);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.debug("token创建失败");
         }
         return tokenEntity;

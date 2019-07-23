@@ -18,5 +18,5 @@ public interface TokenUtil {
 
     public boolean isExpire(String token);
 
-    public String reSign(String token,ExpTime expTime);
+    public String reSign(String token, ExpTime expTime);
 }

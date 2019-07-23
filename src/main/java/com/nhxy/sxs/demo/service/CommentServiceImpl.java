@@ -88,11 +88,11 @@ public class CommentServiceImpl implements CommentMapper {
         List<Comment> commentList = selectByViewId(viewId);
         List<CommentDTO> commentDTOList = new LinkedList<>();
         for (Comment comment : commentList) {
-            int userId=comment.getUserId();
+            int userId = comment.getUserId();
             CommentDTO commentDTO = new CommentDTO(comment.getContent(),
                     comment.getStar(),
                     userMapper.selectByPrimaryKey(userId).getUsername(),
-                    "/user/getpicture/"+userId,
+                    "/user/getpicture/" + userId,
                     comment.getViewId(),
                     comment.getCreateTime());
             commentDTOList.add(commentDTO);
