@@ -5,6 +5,7 @@ import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.mapper.UserMapper;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.utils.MD5Util;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -153,7 +154,18 @@ public class UserServiceImpl implements UserMapper {
     }
 
     public byte[] getImage(User user) {
-        File image = new File(user.getFileName());
+        if (user == null) {
+            log.debug("请求的用户id不存在");
+            byte[] bytes = {0};
+            return bytes;//用户id不存在时候
+        }
+        String fileName = user.getFileName();
+        if (fileName == "") {
+            log.debug("请求的用户的图片不存在");
+            byte[] bytes = {0};
+            return bytes;//图片不存在时候
+        }
+        File image = new File(fileName);
         FileInputStream is = null;
         byte[] imageByte = null;
         try {

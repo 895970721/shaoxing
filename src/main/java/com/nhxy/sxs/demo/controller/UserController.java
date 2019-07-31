@@ -9,6 +9,8 @@ import com.nhxy.sxs.demo.service.UserServiceImpl;
 import com.nhxy.sxs.demo.utils.Base64Util;
 import com.nhxy.sxs.demo.utils.CheckToken;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController()
 @RequestMapping("/user")
+@Api("user")
 public class UserController {
     @Autowired
     UserServiceImpl userService;
@@ -34,6 +37,7 @@ public class UserController {
     UserTokenUtilImpl tokenUtil;
 
     @PostMapping("/register")
+    @ApiOperation(httpMethod ="POST",value = "注册用户")
     /**
      *
      * @param username 注册的用户名
@@ -55,6 +59,7 @@ public class UserController {
      * @param password 用base64编码的密码
      */
     @PostMapping("/login")
+    @ApiOperation(httpMethod ="POST",value = "用户登录")
     public BaseResponse login(HttpServletResponse response, @RequestParam("user_name") String username,
                               @RequestParam("pwd") String password) throws Exception {
         User user = new User();
@@ -72,6 +77,7 @@ public class UserController {
 
     @CheckToken(type = CheckToken.user_tpye)
     @PostMapping("/uploadimage")
+    @ApiOperation(httpMethod ="POST",value = "上传用户头像")
     public BaseResponse uploadImage(@RequestParam() MultipartFile file, @CookieValue("token") Cookie token) {
         BaseResponse response;
         TokenEntity tokenEntity = tokenUtil.getTokenEntity(token.getValue());
@@ -93,17 +99,20 @@ public class UserController {
      */
     @CheckToken
     @GetMapping(value = "/getpicture", produces = "image/png")
+    @ApiOperation(httpMethod ="GET",value = "获得用户头像")
     public byte[] getImage(@CookieValue("token") Cookie token) {
         User user = tokenUtil.getUser(token.getValue());
         return userService.getImage(user);
     }
 
     /**
-     * 通过userid返回接口
+     * <p>通过userid返回接口</p>
+     * <p>如果userid不存在或者对应图片不存在会返回一个{0}的byte数组</p>
      * @param userId
      * @return
      */
     @GetMapping(value = "/getpicture/{user_id}", produces = "image/png")
+    @ApiOperation(httpMethod ="GET",value = "获得用户头像")
     public byte[] getImage(@PathVariable("user_id") Integer userId) {
         User user = userService.selectByPrimaryKey(userId);
         return userService.getImage(user);
