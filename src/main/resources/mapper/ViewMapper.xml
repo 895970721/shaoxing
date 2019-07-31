@@ -22,6 +22,11 @@
     select *
     from view
   </select>
+  <select id="getAllSubViewByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from view
+    where parent_view_id = #{parent_view_id,jdbcType=INTEGER}
+  </select>
   <select id="getAllParentView" resultMap="BaseResultMap">
     select *
     from view

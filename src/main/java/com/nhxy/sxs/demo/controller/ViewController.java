@@ -5,9 +5,7 @@ import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.ViewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,11 +23,28 @@ public class ViewController {
     @Autowired
     private ViewServiceImpl viewService;
 
-    @PostMapping(value = "getAllView")
-    public BaseResponse getAllView() {
+    @PostMapping(value = "getAllParentView")
+    public BaseResponse getAllParentView() {
         BaseResponse response = new BaseResponse(StatusCode.Success);
-        List<ViewDTO> list = viewService.getALLViewDTO();
+        List<ViewDTO> list = viewService.getAllParentViewDTO();
         response.setData(list);
         return response;
     }
+
+    @GetMapping(value = "getSubViewByParentId")
+    public BaseResponse getSubViewByParentId(@RequestParam("id") Integer parent_view_id){
+        BaseResponse response = new BaseResponse(StatusCode.Success);
+        List<ViewDTO> list = viewService.getAllSubViewDTOByParentId(parent_view_id);
+        response.setData(list);
+        return response;
+    }
+
+    @GetMapping(value = "getViewById")
+    public BaseResponse getViewByParentId(@RequestParam("id") Integer view_id){
+        BaseResponse response = new BaseResponse(StatusCode.Success);
+        List<ViewDTO> list = viewService.getViewDTOById(view_id);
+        response.setData(list);
+        return response;
+    }
+
 }

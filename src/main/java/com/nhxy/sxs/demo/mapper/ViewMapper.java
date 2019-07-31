@@ -15,17 +15,23 @@ public interface ViewMapper {
 
     View selectByPrimaryKey(Integer id);
 
+    List<ViewDTO> getViewDTOById(Integer id);
+
     int updateByPrimaryKeySelective(View record);
 
     int updateByPrimaryKey(View record);
 
     List<Picture> selectParentPictureByPrimaryKey(Integer id);
 
-    List<ViewDTO> getALLViewDTO();
+    List<ViewDTO> getAllParentViewDTO();
+
+    List<ViewDTO> getAllSubViewDTOByParentId(Integer parent_view_id);
 
     List<View> getAllView();
 
     List<View> getAllParentView();
 
     List<View> getAllSubView(Integer id);
+
+    List<View> getAllSubViewByParentId(Integer parent_view_id);
 }

@@ -15,6 +15,4 @@ public class ViewDTO {
     private String fileContent;
 
     private List<Picture> pic_url;
-
-    private List<SubViewDTO> subViewList;
 }
