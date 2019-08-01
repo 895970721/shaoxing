@@ -1,5 +1,6 @@
 package com.nhxy.sxs.demo.mapper;
 
+import com.nhxy.sxs.demo.dto.ParentViewDTO;
 import com.nhxy.sxs.demo.dto.ViewDTO;
 import com.nhxy.sxs.demo.entity.Picture;
 import com.nhxy.sxs.demo.entity.View;
@@ -16,6 +17,8 @@ public interface ViewMapper {
     View selectByPrimaryKey(Integer id);
 
     List<ViewDTO> getViewDTOById(Integer id);
+
+    List<Integer> getAllParentId();
 
     int updateByPrimaryKeySelective(View record);
 
@@ -34,4 +37,6 @@ public interface ViewMapper {
     List<View> getAllSubView(Integer id);
 
     List<View> getAllSubViewByParentId(Integer parent_view_id);
+
+    List<ParentViewDTO> getViewByParentId(Integer id);
 }

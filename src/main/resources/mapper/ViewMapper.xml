@@ -18,6 +18,9 @@
     from view
     where Id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getAllParentId" resultType="Integer">
+    select id from view where id in (select id from view where parent_view_id is null)
+  </select>
   <select id="getAllView" resultMap="BaseResultMap">
     select *
     from view
