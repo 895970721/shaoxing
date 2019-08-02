@@ -5,6 +5,8 @@ import com.nhxy.sxs.demo.dto.FamousDTO;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.FamousServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/famous")
+@Api(tags = "名人接口")
 public class FamousController {
     @Autowired
     private FamousServiceImpl famousService;
@@ -31,6 +34,7 @@ public class FamousController {
      * @return
      */
     @GetMapping(value = "/getAllFamousByPage")
+    @ApiOperation("查询所有名人")
     public BaseResponse getAllFamousByPage
     (@RequestParam("page_num") Integer page_num,
      @RequestParam("page_size") Integer page_size) {
@@ -46,6 +50,7 @@ public class FamousController {
      * @return
      */
     @GetMapping(value = "getFamousById")
+    @ApiOperation("通过id查询名人信息")
     public BaseResponse getFamousById(@RequestParam("famousId") Integer id){
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<FamousDTO> list = famousService.getFamousById(id);
@@ -59,6 +64,7 @@ public class FamousController {
      * @return
      */
     @PostMapping(value = "getFamousByFuzzyQuery")
+    @ApiOperation("模糊查询名人")
     public BaseResponse getFamousByFuzzyQuery(@RequestParam("word") String word){
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<String> list = famousService.getFamousByFuzzyQuery(word);
@@ -72,6 +78,7 @@ public class FamousController {
      * @return
      */
     @GetMapping(value = "getFamousByName")
+    @ApiOperation("通过名字查询名人")
     public BaseResponse getFamousByName(@RequestParam("name") String name){
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<FamousDTO> list = famousService.getFamousByName(name);

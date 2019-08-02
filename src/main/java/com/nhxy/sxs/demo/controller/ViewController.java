@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/view")
-@Api("景点接口")
+@Api(tags = "景点接口")
 public class ViewController {
 
     @Autowired
