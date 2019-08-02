@@ -2,7 +2,8 @@ package com.nhxy.sxs.demo.enums;
 
 public enum StatusCode {
     Success(1, "数据获取成功"),
-    Fail(0, "数据获取失败");
+    Fail(0, "数据获取失败"),
+    VeritfFail(0, "验证失败");
     private Integer Code;
     private String msg;
 

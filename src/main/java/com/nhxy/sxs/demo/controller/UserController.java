@@ -8,6 +8,7 @@ import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.UserServiceImpl;
 import com.nhxy.sxs.demo.utils.Base64Util;
 import com.nhxy.sxs.demo.utils.CheckToken;
+import com.nhxy.sxs.demo.utils.MD5Util;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * <p>Class: UserController</p>
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController()
 @RequestMapping("/user")
-@Api("user")
+@Api(value = "user", tags = "用户操作接口")
 public class UserController {
     @Autowired
     UserServiceImpl userService;
@@ -37,7 +38,7 @@ public class UserController {
     UserTokenUtilImpl tokenUtil;
 
     @PostMapping("/register")
-    @ApiOperation(httpMethod ="POST",value = "注册用户")
+    @ApiOperation(httpMethod = "POST", value = "注册用户")
     /**
      *
      * @param username 注册的用户名
@@ -45,13 +46,7 @@ public class UserController {
      */
     public BaseResponse register(@RequestParam("user_name") String username,
                                  @RequestParam("pwd") String password) {
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(Base64Util.decode(password));
-        return userService.register(user);
-
-
+        return new BaseResponse(userService.register(username, Base64Util.decode(password)));
     }
 
     /**
@@ -59,28 +54,31 @@ public class UserController {
      * @param password 用base64编码的密码
      */
     @PostMapping("/login")
-    @ApiOperation(httpMethod ="POST",value = "用户登录")
-    public BaseResponse login(HttpServletResponse response, @RequestParam("user_name") String username,
+    @ApiOperation(httpMethod = "POST", value = "用户登录，返回token")
+    public BaseResponse login(@RequestParam("user_name") String username,
                               @RequestParam("pwd") String password) throws Exception {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(Base64Util.decode(password));
-        BaseResponse baseResponse = userService.login(user);
-        if (baseResponse.getCode() == 1) {//创建token 封装进cookie；
-            Cookie cookie = new Cookie("token", tokenUtil.create(user, ExpTime.OneDay).getToken());
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+        user.setPassword(MD5Util.encode(Base64Util.decode(password)));
+        StatusCode statusCode = userService.login(user);
+        if (statusCode.getCode() == 1) {//创建token 封装进cookie；
+            String token = tokenUtil.create(user, ExpTime.OneDay).getToken();
+            BaseResponse baseResponse = new BaseResponse(statusCode);
+            Map data = new LinkedHashMap();
+            data.put("token", token);
+            baseResponse.setData(data);
+            return baseResponse;
         }
-        return baseResponse;
+        return new BaseResponse(statusCode);
     }
 
     @CheckToken(type = CheckToken.user_tpye)
     @PostMapping("/uploadimage")
-    @ApiOperation(httpMethod ="POST",value = "上传用户头像")
-    public BaseResponse uploadImage(@RequestParam() MultipartFile file, @CookieValue("token") Cookie token) {
+    @ApiOperation(httpMethod = "POST", value = "上传用户头像")
+    public BaseResponse uploadImage(@RequestParam() MultipartFile file, @RequestParam("token") String token) {
+
         BaseResponse response;
-        TokenEntity tokenEntity = tokenUtil.getTokenEntity(token.getValue());
+        TokenEntity tokenEntity = tokenUtil.getTokenEntity(token);
         User user = userService.selectByUserName(tokenEntity.getUsername());
         if (userService.updateImageByPrimaryKey(user, file) == 1) {
             response = new BaseResponse(StatusCode.Success);
@@ -94,26 +92,29 @@ public class UserController {
     /**
      * 通过用户携带的token返回头像
      * 推荐个人中心使用此接口
+     *
      * @param token
      * @return
      */
     @CheckToken
     @GetMapping(value = "/getpicture", produces = "image/png")
-    @ApiOperation(httpMethod ="GET",value = "获得用户头像")
-    public byte[] getImage(@CookieValue("token") Cookie token) {
-        User user = tokenUtil.getUser(token.getValue());
+    @ApiOperation(httpMethod = "GET", value = "通过token返回头像")
+    public byte[] getImage(@RequestParam("token") String token) {
+        User user = tokenUtil.getUser(token);
         return userService.getImage(user);
     }
 
     /**
      * <p>通过userid返回接口</p>
      * <p>如果userid不存在或者对应图片不存在会返回一个{0}的byte数组</p>
+     *
      * @param userId
      * @return
      */
     @GetMapping(value = "/getpicture/{user_id}", produces = "image/png")
-    @ApiOperation(httpMethod ="GET",value = "获得用户头像")
+    @ApiOperation(httpMethod = "GET", value = "通过userid返回用户头像")
     public byte[] getImage(@PathVariable("user_id") Integer userId) {
+
         User user = userService.selectByPrimaryKey(userId);
         return userService.getImage(user);
     }

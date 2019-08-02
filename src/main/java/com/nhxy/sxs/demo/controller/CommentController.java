@@ -6,10 +6,11 @@ import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.CommentServiceImpl;
 import com.nhxy.sxs.demo.utils.CheckToken;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import java.util.Date;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping(value = "/comment")
+@Api(value = "comment", tags = "评论接口")
 public class CommentController {
 
     @Autowired
@@ -29,7 +31,6 @@ public class CommentController {
     CommentServiceImpl commentService;
 
     /**
-     * @param cookie
      * @param content 评论内容
      * @param viewId  评论的景点id
      * @param star    评论星级
@@ -37,13 +38,13 @@ public class CommentController {
      */
     @CheckToken(type = CheckToken.user_tpye)
     @PostMapping("/add")
-    public BaseResponse add(@CookieValue(name = "token") Cookie cookie,
+    public BaseResponse add(@ApiParam(name = "token", value = "传入token") @RequestParam(name = "token") String token,
                             @RequestParam("content") String content,
                             @RequestParam("view_id") Integer viewId,
                             @RequestParam(value = "star", required = false) Integer star) {
         Comment comment = new Comment(content,
                 star,
-                tokenUtil.getUser(cookie.getValue()).getId(),
+                tokenUtil.getUser(token).getId(),
                 viewId,
                 new Date());
         try {

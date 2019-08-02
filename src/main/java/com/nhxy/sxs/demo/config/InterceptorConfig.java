@@ -15,8 +15,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2019/7/19 16:05
  */
 
-
-@Configuration
+//取消拦截器
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     TokenInterceptor tokenInterceptor;

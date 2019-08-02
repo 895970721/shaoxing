@@ -77,43 +77,45 @@ public class UserServiceImpl implements UserMapper {
      * @param user 实体类
      */
 
-    public BaseResponse register(User user) {
-        BaseResponse baseResponse;
+    public StatusCode register(String username,String password) {
+        StatusCode statusCode;
 
-        if (user.getUsername().length() < usernameMinLength) {
-            baseResponse = new BaseResponse(StatusCode.Fail);
-            baseResponse.setMsg("用户名长度过短");
-            return baseResponse;
+        if (username.length() < usernameMinLength) {
+            statusCode=StatusCode.Fail;
+            statusCode.setMsg("用户名长度过短");
+            return statusCode;
         }
-        if (user.getPassword().length() > passwordMaxLength) {
-            baseResponse = new BaseResponse(StatusCode.Fail);
-            baseResponse.setMsg("密码长度错误");
-            return baseResponse;
+        if (password.length() > passwordMaxLength) {
+            statusCode=StatusCode.Fail;
+            statusCode.setMsg("密码长度错误");
+            return statusCode;
         }
-        if (userMapper.selectByUserName(user.getUsername()) != null) {
-            baseResponse = new BaseResponse(StatusCode.Fail);
-            baseResponse.setMsg("用户名重复，请重试");
-            return baseResponse;
+        if (userMapper.selectByUserName(username) != null) {
+            statusCode=StatusCode.Fail;
+            statusCode.setMsg("用户名重复，请重试");
+            return statusCode;
         }
-        user.setPassword(MD5Util.encode(user.getPassword()));//MD5加密
+        User user=new User();
+        user.setUsername(username);
+        user.setPassword(MD5Util.encode(username));//MD5加密
         userMapper.insertSelective(user);
-        return new BaseResponse(StatusCode.Success);
+        return StatusCode.Success;
     }
 
-    public BaseResponse login(User user) {
-        BaseResponse baseResponse;
+    public StatusCode login(User user) {
+        StatusCode statusCode;
         User userFormDB = userMapper.selectByUserName(user.getUsername());
         if (userFormDB == null) {
-            baseResponse = new BaseResponse(StatusCode.Fail);
-            baseResponse.setMsg("用户名错误");
-            return baseResponse;
+            statusCode= StatusCode.Fail;
+            statusCode.setMsg("用户名错误");
+            return statusCode;
         }
-        if (!MD5Util.encode(user.getPassword()).equals(userFormDB.getPassword())) {//密码不匹配
-            baseResponse = new BaseResponse(StatusCode.Fail);
-            baseResponse.setMsg("密码错误");
-            return baseResponse;
+        if (!user.getPassword().equals(userFormDB.getPassword())) {//密码不匹配
+            statusCode= StatusCode.Fail;
+            statusCode.setMsg("密码错误");
+            return statusCode;
         }
-        return new BaseResponse(StatusCode.Success);
+        return StatusCode.Success;
     }
 
     @Value("${systemParam.user.imagefile.path}")

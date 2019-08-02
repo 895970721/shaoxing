@@ -4,6 +4,7 @@ import com.nhxy.sxs.demo.dto.HomePageDTO;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.HomePageServiceImpl;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/city")
+@Api(tags = "主页接口")
 public class HomePageController {
 
     @Autowired

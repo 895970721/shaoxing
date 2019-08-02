@@ -5,7 +5,7 @@ import com.nhxy.sxs.demo.dto.ViewDTO;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.ViewServiceImpl;
-import javafx.scene.Parent;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/view")
+@Api("景点接口")
 public class ViewController {
 
     @Autowired
@@ -27,6 +28,7 @@ public class ViewController {
 
     /**
      * 获取所有父景点信息
+     *
      * @return
      */
     @PostMapping(value = "getAllParentView")
@@ -39,11 +41,12 @@ public class ViewController {
 
     /**
      * 通过父景点id获取子景点信息
+     *
      * @param parent_view_id
      * @return
      */
     @GetMapping(value = "getSubViewByParentId")
-    public BaseResponse getSubViewByParentId(@RequestParam("id") Integer parent_view_id){
+    public BaseResponse getSubViewByParentId(@RequestParam("id") Integer parent_view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ViewDTO> list = viewService.getAllSubViewDTOByParentId(parent_view_id);
         response.setData(list);
@@ -52,11 +55,12 @@ public class ViewController {
 
     /**
      * 通过id获取景点信息
+     *
      * @param view_id
      * @return
      */
     @GetMapping(value = "getViewById")
-    public BaseResponse getViewById(@RequestParam("id") Integer view_id){
+    public BaseResponse getViewById(@RequestParam("id") Integer view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ViewDTO> list = viewService.getViewDTOById(view_id);
         response.setData(list);
@@ -68,10 +72,10 @@ public class ViewController {
      * 通过父景点id获取获取景点信息
      */
     @GetMapping(value = "getViewByParentId")
-    public BaseResponse getViewByParentId(@RequestParam("id") Integer parent_view_id){
+    public BaseResponse getViewByParentId(@RequestParam("id") Integer parent_view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ParentViewDTO> list = viewService.getViewByParentId(parent_view_id);
-        if(list==null){
+        if (list == null) {
             response = new BaseResponse(StatusCode.Fail);
         }
         response.setData(list);
