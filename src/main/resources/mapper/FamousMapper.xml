@@ -10,11 +10,17 @@
   <sql id="Base_Column_List" >
     Id, title, filename, pic_url
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultType="com.nhxy.sxs.demo.entity.Famous" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from famous
     where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getFamousByFuzzyQuery" resultType="String" parameterType="java.lang.String">
+    select title from famous where title like "%"#{word,jdbcType=VARCHAR}"%"
+  </select>
+  <select id="selectFamousByName" resultType="com.nhxy.sxs.demo.entity.Famous" parameterType="java.lang.String">
+    select * from famous where title = #{name,jdbcType=VARCHAR}
   </select>
   <select id="getAllFamous" resultType="com.nhxy.sxs.demo.entity.Famous">
     select * from famous

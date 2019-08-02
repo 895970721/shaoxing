@@ -14,8 +14,9 @@ public interface FamousMapper {
 //
 //    int insertSelective(Famous record);
 //
-//    Famous selectByPrimaryKey(Integer id);
-//
+    Famous selectByPrimaryKey(Integer id);
+
+    Famous selectFamousByName(String name);
 //    int updateByPrimaryKeySelective(Famous record);
 //
 //    int updateByPrimaryKey(Famous record);
@@ -23,4 +24,10 @@ public interface FamousMapper {
     List<Famous> getAllFamous();
 
     List<FamousDTO> getAllFamousByPage(int page_num, int page_size);
+
+    List<FamousDTO> getFamousById(Integer id);
+
+    List<String> getFamousByFuzzyQuery(String word);
+
+    List<FamousDTO> getFamousByName(String name);
 }

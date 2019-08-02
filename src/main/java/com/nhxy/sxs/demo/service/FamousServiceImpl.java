@@ -4,13 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.nhxy.sxs.demo.dto.FamousDTO;
 import com.nhxy.sxs.demo.entity.Famous;
 import com.nhxy.sxs.demo.mapper.FamousMapper;
+import com.nhxy.sxs.demo.utils.FamousUtilImpl;
 import com.nhxy.sxs.demo.utils.FileIOUtils;
 import com.nhxy.sxs.demo.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,9 @@ public class FamousServiceImpl implements FamousMapper {
 
     @Autowired
     private FamousMapper famousMapper;
+
+    @Autowired
+    private FamousUtilImpl famousUtil;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -59,6 +62,33 @@ public class FamousServiceImpl implements FamousMapper {
         //redisTemplate.opsForList().leftPush("user:list", JSON.toJSONString(list));
         //stringRedisTemplate.opsForValue().set("user:name", "张三");
         return FamousDTO_list;
+    }
+
+    @Override
+    public List<FamousDTO> getFamousById(Integer id) {
+        Famous famous = famousMapper.selectByPrimaryKey(id);
+        return famousUtil.getFamousContent(famous);
+    }
+
+    @Override
+    public List<String> getFamousByFuzzyQuery(String word) {
+        return famousMapper.getFamousByFuzzyQuery(word);
+    }
+
+    @Override
+    public List<FamousDTO> getFamousByName(String name) {
+        Famous famous = famousMapper.selectFamousByName(name);
+        return famousUtil.getFamousContent(famous);
+    }
+
+    @Override
+    public Famous selectByPrimaryKey(Integer id) {
+        return famousMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Famous selectFamousByName(String name) {
+        return famousMapper.selectFamousByName(name);
     }
 
     @Override
