@@ -66,6 +66,11 @@ public class FamousController {
         return response;
     }
 
+    /**
+     * 通过名字查询名人
+     * @param name
+     * @return
+     */
     @GetMapping(value = "getFamousByName")
     public BaseResponse getFamousByName(@RequestParam("name") String name){
         BaseResponse response = new BaseResponse(StatusCode.Success);
