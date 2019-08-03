@@ -39,9 +39,9 @@ public class CommentController {
     @CheckToken(type = CheckToken.user_tpye)
     @PostMapping("/add")
     public BaseResponse add(@ApiParam(name = "token", value = "传入token") @RequestParam(name = "token") String token,
-                            @RequestParam("content") String content,
-                            @RequestParam("view_id") Integer viewId,
-                            @RequestParam(value = "star", required = false) Integer star) {
+                            @ApiParam( value = "评论内容") @RequestParam("content") String content,
+                            @ApiParam( value = "评论的景点id") @RequestParam("view_id") Integer viewId,
+                            @ApiParam( value = "评论星级") @RequestParam(value = "star", required = false) Integer star) {
         Comment comment = new Comment(content,
                 star,
                 tokenUtil.getUser(token).getId(),

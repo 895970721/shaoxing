@@ -104,7 +104,8 @@
         <!--tables-->
 
 
-        <table tableName="picture" domainObjectName="Picture"
+        <!--
+        <table tableName="like_view" domainObjectName="LikeView"
 
                enableCountByExample="false" enableUpdateByExample="false"
 
@@ -113,6 +114,7 @@
                selectByExampleQueryId="false">
 
         </table>
+        -->
 
 
     </context>

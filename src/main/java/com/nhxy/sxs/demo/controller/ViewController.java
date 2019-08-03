@@ -6,6 +6,7 @@ import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.ViewServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class ViewController {
      * @return
      */
     @PostMapping(value = "getAllParentView")
+    @ApiOperation("获取所有父景点信息")
     public BaseResponse getAllParentView() {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ViewDTO> list = viewService.getAllParentViewDTO();
@@ -46,6 +48,7 @@ public class ViewController {
      * @return
      */
     @GetMapping(value = "getSubViewByParentId")
+    @ApiOperation("通过父景点id获取子景点信息")
     public BaseResponse getSubViewByParentId(@RequestParam("id") Integer parent_view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ViewDTO> list = viewService.getAllSubViewDTOByParentId(parent_view_id);
@@ -60,6 +63,7 @@ public class ViewController {
      * @return
      */
     @GetMapping(value = "getViewById")
+    @ApiOperation("通过id获取景点信息")
     public BaseResponse getViewById(@RequestParam("id") Integer view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ViewDTO> list = viewService.getViewDTOById(view_id);
@@ -72,6 +76,7 @@ public class ViewController {
      * 通过父景点id获取获取景点信息
      */
     @GetMapping(value = "getViewByParentId")
+    @ApiOperation("通过父景点id获取获取景点信息")
     public BaseResponse getViewByParentId(@RequestParam("id") Integer parent_view_id) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         List<ParentViewDTO> list = viewService.getViewByParentId(parent_view_id);

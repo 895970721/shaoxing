@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserMapper {
         }
         User user=new User();
         user.setUsername(username);
-        user.setPassword(MD5Util.encode(username));//MD5加密
+        user.setPassword(MD5Util.encode(password));//MD5加密
         userMapper.insertSelective(user);
         return StatusCode.Success;
     }

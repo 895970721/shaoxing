@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhxy.sxs.demo.mapper.LikeViewMapper" >
+  <resultMap id="BaseResultMap" type="com.nhxy.sxs.demo.entity.LikeView" >
+    <constructor >
+      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="view_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, view_id, user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from like_view
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUser" resultMap="BaseResultMap" parameterType="com.nhxy.sxs.demo.entity.User" >
+    select
+    <include refid="Base_Column_List" />
+    from like_view
+    where user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByLikeViewSelective" resultMap="BaseResultMap" parameterType="com.nhxy.sxs.demo.entity.LikeView" >
+    select
+    <include refid="Base_Column_List" />
+    from like_view
+      <trim prefix="where"  prefixOverrides="AND" >
+          <if test="id != null" >
+              Id = #{Id,jdbcType=INTEGER}
+          </if>
+          <if test="userId != null" >
+              AND user_id = #{userId,jdbcType=INTEGER}
+          </if>
+          <if test="viewId != null" >
+              AND view_id = #{viewId,jdbcType=INTEGER}
+          </if>
+      </trim>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from like_view
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.LikeView" >
+    insert into like_view (Id, view_id, user_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{viewId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.LikeView" >
+    insert into like_view
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="viewId != null" >
+        view_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="viewId != null" >
+        #{viewId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhxy.sxs.demo.entity.LikeView" >
+    update like_view
+    <set >
+      <if test="viewId != null" >
+        view_id = #{viewId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhxy.sxs.demo.entity.LikeView" >
+    update like_view
+    set view_id = #{viewId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

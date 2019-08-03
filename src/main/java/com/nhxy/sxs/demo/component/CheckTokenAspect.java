@@ -53,7 +53,6 @@ public class CheckTokenAspect {
         for (tokenParamPoint = 0; !parameterNames[tokenParamPoint].equals("token"); tokenParamPoint++) {
         }
         String token = (String) args[tokenParamPoint];
-        System.out.println(token);
         if (!tokenUtil.verifie(token)) {
             log.debug("验证错误");
             return new BaseResponse(StatusCode.VeritfFail);

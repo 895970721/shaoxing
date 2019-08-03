@@ -5,6 +5,7 @@ import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.HomePageServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class HomePageController {
      * @return
      */
     @GetMapping(value = "getCity")
+    @ApiOperation("获取城市信息 type:1为古城,2为水城,3为名城")
     public BaseResponse getCity(@RequestParam("city_type") Integer type) {
         BaseResponse response = new BaseResponse(StatusCode.Success);
         HomePageDTO homePageDTO = homePageService.getCity(type);
