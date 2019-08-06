@@ -11,6 +11,6 @@ logging:
 
 pagehelper:
   helper-dialect: mysql
-  reasonable: true
+  reasonable: false
   support-methods-arguments: true
   params:
