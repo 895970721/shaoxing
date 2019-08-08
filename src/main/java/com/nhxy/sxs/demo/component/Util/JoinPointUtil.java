@@ -22,6 +22,9 @@ public class JoinPointUtil {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String[] paramNames = signature.getParameterNames();
+        if(paramNames.length==0){
+            return null;
+        }
         int tokenParamPoint = 0;//标识token这个参数在参数数组里的位置
         for (tokenParamPoint = 0;
              !paramNames[tokenParamPoint].equals("token") && paramNames.length - 1 > tokenParamPoint;//注意 长度从1开始 数组下标是从0开始
