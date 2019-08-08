@@ -49,7 +49,8 @@ public class CheckTokenAspect {
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         String[] parameterNames = methodSignature.getParameterNames();
-        int tokenParamPoint = 0;//标识方法中的
+
+        int tokenParamPoint = 0;//标识token这个参数在参数数组里的位置
         for (tokenParamPoint = 0; !parameterNames[tokenParamPoint].equals("token"); tokenParamPoint++) {
         }
         String token = (String) args[tokenParamPoint];
