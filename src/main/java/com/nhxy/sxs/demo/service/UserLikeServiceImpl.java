@@ -69,13 +69,16 @@ public class UserLikeServiceImpl implements LikeViewMapper {
     }
 
 
-    public StatusCode add(int viewId, String token) {
+    public StatusCode add(int viewId, String token,String viewTitle,String pictureUrl) {
         User user = tokenUtil.getUser(token);
         LikeView likeView = new LikeView();
         likeView.setUserId(user.getId());
         likeView.setViewId(viewId);
+        likeView.setPictureUrl(pictureUrl);
+        likeView.setViewTitile(viewTitle);
         //首先判断数据库有没有相同记录
-        if (likeViewMapper.selectByLikeViewSelective(likeView) != null) {
+        if (likeViewMapper.selectByLikeViewSelective(likeView) .size()!=0 ) {
+            Object o=likeViewMapper.selectByLikeViewSelective(likeView);
             StatusCode statusCode = StatusCode.Fail;
             statusCode.setMsg("此条记录已经存在于数据库");
             return statusCode;
@@ -90,7 +93,6 @@ public class UserLikeServiceImpl implements LikeViewMapper {
 
     public List all(String token) {
         List likeViewsList = likeViewMapper.selectByUser(tokenUtil.getUser(token));
-        System.out.println(likeViewsList);
         return likeViewsList;
     }
 

@@ -44,8 +44,10 @@ public class UserLikesController {
     @ApiOperation("增加喜欢的景点接口")
     @CheckToken
     public BaseResponse add(@ApiParam("喜欢的景点id") @PathVariable("view_id") int viewId,
-                            @ApiParam("传入token") @RequestParam("token") String token) {
-        StatusCode statusCode = userLikeService.add(viewId, token);
+                            @ApiParam("传入token") @RequestParam("token") String token,
+                            @ApiParam("景区名字") @RequestParam("view_title") String viewTitle,
+                            @ApiParam("景区第一张图片") @RequestParam("picture_url") String pictureUrl) {
+        StatusCode statusCode = userLikeService.add(viewId, token,viewTitle,pictureUrl);
         return new BaseResponse(statusCode);
     }
 

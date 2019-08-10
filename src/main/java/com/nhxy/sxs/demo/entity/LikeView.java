@@ -7,11 +7,17 @@ public class LikeView {
 
     private Integer viewId;
 
+    private String viewTitile;
+
+    private String pictureUrl;
+
     private Integer userId;
 
-    public LikeView(Integer id, Integer viewId, Integer userId) {
+    public LikeView(Integer id, Integer viewId, String viewTitile, String pictureUrl, Integer userId) {
         this.id = id;
         this.viewId = viewId;
+        this.viewTitile = viewTitile;
+        this.pictureUrl = pictureUrl;
         this.userId = userId;
     }
 
@@ -35,6 +41,22 @@ public class LikeView {
         this.viewId = viewId;
     }
 
+    public String getViewTitile() {
+        return viewTitile;
+    }
+
+    public void setViewTitile(String viewTitile) {
+        this.viewTitile = viewTitile == null ? null : viewTitile.trim();
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -50,11 +72,13 @@ public class LikeView {
         LikeView likeView = (LikeView) o;
         return Objects.equals(id, likeView.id) &&
                 Objects.equals(viewId, likeView.viewId) &&
+                Objects.equals(viewTitile, likeView.viewTitile) &&
+                Objects.equals(pictureUrl, likeView.pictureUrl) &&
                 Objects.equals(userId, likeView.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, viewId, userId);
+        return Objects.hash(id, viewId, viewTitile, pictureUrl, userId);
     }
 }

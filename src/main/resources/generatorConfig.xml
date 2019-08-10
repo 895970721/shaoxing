@@ -105,7 +105,7 @@
 
 
         <!--
-        <table tableName="access_log" domainObjectName="AccessLog"
+        <table tableName="like_view" domainObjectName="LikeView"
 
                enableCountByExample="false" enableUpdateByExample="false"
 
