@@ -24,6 +24,7 @@ file:
   content: "D:\\shaoxing\\famous_content\\"
   viewFileAddress: "D:\\shaoxing\\view\\"
 systemParam:
+  ip-database-path: "C:\\Users\\GodDai\\Downloads\\GeoLite2-City_20190806\\GeoLite2-City_20190806\\GeoLite2-City.mmdb"
   user:
     name_min_length: 6
     password_max_length: 32

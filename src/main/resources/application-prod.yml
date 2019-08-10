@@ -25,6 +25,7 @@ file:
   viewFileAddress: "/home/shaoxing/view/"
 
 systemParam:
+  ip-database-path: "/home/common/GeoLite2-City.mmdb"
   user:
     name_min_length: 6
     password_max_length: 32

@@ -103,9 +103,8 @@
 
         <!--tables-->
 
-
         <!--
-        <table tableName="like_view" domainObjectName="LikeView"
+        <table tableName="ip_address" domainObjectName="IpAddress"
 
                enableCountByExample="false" enableUpdateByExample="false"
 
@@ -115,7 +114,6 @@
 
         </table>
         -->
-
 
     </context>
 

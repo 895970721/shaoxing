@@ -4,6 +4,7 @@ import com.nhxy.sxs.demo.component.Util.JoinPointUtil;
 import com.nhxy.sxs.demo.entity.AccessLog;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.mapper.AccessLogMapper;
+import com.nhxy.sxs.demo.service.IpAddressServiceImpl;
 import com.nhxy.sxs.demo.utils.IpUtil;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,6 +33,8 @@ public class SysLogAspect {
     @Autowired
     UserTokenUtilImpl tokenUtil;
     AccessLogMapper accessLogMapper;
+    @Autowired
+    IpAddressServiceImpl ipAddressService;
 
     @Autowired
     public void setAccessLogMapper(AccessLogMapper accessLogMapper) {
@@ -55,7 +58,7 @@ public class SysLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String uA = request.getHeader("User-Agent");
-        String ipAddress = IpUtil.getIpAddress(request);
+        String ip = IpUtil.getIpAddress(request);
         Date time = new Date(System.currentTimeMillis());
 
         //取到参数中的token
@@ -75,13 +78,14 @@ public class SysLogAspect {
 
         AccessLog accessLog = new AccessLog();
         accessLog.setAccessTime(time);
-        accessLog.setIp(ipAddress);
+        accessLog.setIp(ip);
+        accessLog.setIpAddress(ipAddressService.queryAddress(ip));
         accessLog.setUa(uA);
         accessLog.setMethod(method);
         accessLog.setUserId(userId);
         accessLog.setUserName(userName);
 
-        accessLogMapper.insert(accessLog);
+        accessLogMapper.insertSelective(accessLog);
         Object result = joinPoint.proceed();
         return result;
     }

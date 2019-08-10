@@ -11,20 +11,31 @@ public class AccessLog {
 
     private String ip;
 
+    private String ipAddress;
+
     private String ua;
 
     private Date accessTime;
 
     private String method;
 
-    public AccessLog(Integer id, Integer userId, String userName, String ip, String ua, Date accessTime, String method) {
+    public AccessLog(Integer id, Integer userId, String userName, String ip, String ipAddress, String ua, Date accessTime, String method) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
         this.ip = ip;
+        this.ipAddress = ipAddress;
         this.ua = ua;
         this.accessTime = accessTime;
         this.method = method;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public AccessLog() {

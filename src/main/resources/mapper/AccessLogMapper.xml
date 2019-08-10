@@ -7,13 +7,14 @@
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ip_address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="UA" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="access_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="method" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, user_id, user_name, ip, UA, access_time, method
+    Id, user_id, user_name, ip, ip_address ,UA, access_time, method
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,10 +28,10 @@
   </delete>
   <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.AccessLog" >
     insert into access_log (Id, user_id, user_name, 
-      ip, UA, access_time, 
+      ip, ip_address ,UA, access_time,
       method)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
-      #{ip,jdbcType=VARCHAR}, #{ua,jdbcType=VARCHAR}, #{accessTime,jdbcType=TIMESTAMP}, 
+      #{ip,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR},#{ua,jdbcType=VARCHAR}, #{accessTime,jdbcType=TIMESTAMP},
       #{method,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.AccessLog" >
@@ -47,6 +48,9 @@
       </if>
       <if test="ip != null" >
         ip,
+      </if>
+      <if test="ipAddress != null" >
+        ip_address,
       </if>
       <if test="ua != null" >
         UA,
@@ -71,6 +75,9 @@
       <if test="ip != null" >
         #{ip,jdbcType=VARCHAR},
       </if>
+      <if test="ipAddress != null" >
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
       <if test="ua != null" >
         #{ua,jdbcType=VARCHAR},
       </if>
@@ -94,6 +101,9 @@
       <if test="ip != null" >
         ip = #{ip,jdbcType=VARCHAR},
       </if>
+      <if test="ipAddress != null" >
+        ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
       <if test="ua != null" >
         UA = #{ua,jdbcType=VARCHAR},
       </if>
@@ -111,6 +121,7 @@
     set user_id = #{userId,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
       UA = #{ua,jdbcType=VARCHAR},
       access_time = #{accessTime,jdbcType=TIMESTAMP},
       method = #{method,jdbcType=VARCHAR}

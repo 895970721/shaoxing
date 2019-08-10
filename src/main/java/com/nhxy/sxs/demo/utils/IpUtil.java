@@ -1,6 +1,9 @@
 package com.nhxy.sxs.demo.utils;
 
+import com.maxmind.geoip2.DatabaseReader;
+
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 
 /**
  * <p>Class: IpUtil</p>
@@ -13,6 +16,13 @@ public class IpUtil {
     private static final String COMMA = ",";
     private static final Integer IP_LENGTH = 15;
 
+    /**
+     * 从请求头中取到ip地址的值
+     * e.g. 120.120.120.120
+     *
+     * @param request
+     * @return
+     */
     public static String getIpAddress(HttpServletRequest request) {
         String ipAddress = null;
         try {
@@ -37,4 +47,76 @@ public class IpUtil {
         }
         return ipAddress;
     }
+
+    /**
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     * @description: 获得国家
+     */
+    public static String getCountry(DatabaseReader reader, String ip) throws Exception {
+        return reader.city(InetAddress.getByName(ip)).getCountry().getNames().get("zh-CN");
+    }
+
+    /**
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     * @description: 获得省份
+     */
+    public static String getProvince(DatabaseReader reader, String ip) throws Exception {
+        return reader.city(InetAddress.getByName(ip)).getMostSpecificSubdivision().getNames().get("zh-CN");
+    }
+
+    /**
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     * @description: 获得城市
+     */
+    public static String getCity(DatabaseReader reader, String ip) throws Exception {
+        return reader.city(InetAddress.getByName(ip)).getCity().getNames().get("zh-CN");
+    }
+
+    /**
+     * 获得详细地址
+     *
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     */
+    public static String getAddress(DatabaseReader reader, String ip) throws Exception {
+        String country = reader.city(InetAddress.getByName(ip)).getCountry().getNames().get("zh-CN");
+        String province = reader.city(InetAddress.getByName(ip)).getMostSpecificSubdivision().getNames().get("zh-CN");
+        String city = reader.city(InetAddress.getByName(ip)).getCity().getNames().get("zh-CN");
+        String f = "-";
+        return country + f + province + f + city;
+    }
+
+    /**
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     * @description: 获得经度
+     */
+    public static Double getLongitude(DatabaseReader reader, String ip) throws Exception {
+        return reader.city(InetAddress.getByName(ip)).getLocation().getLongitude();
+    }
+
+    /**
+     * @param reader
+     * @param ip
+     * @return
+     * @throws Exception
+     * @description: 获得纬度
+     */
+    public static Double getLatitude(DatabaseReader reader, String ip) throws Exception {
+        return reader.city(InetAddress.getByName(ip)).getLocation().getLatitude();
+    }
+
 }
