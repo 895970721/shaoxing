@@ -3,9 +3,7 @@ package com.nhxy.sxs.demo.service;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.mapper.UserMapper;
-import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.utils.MD5Util;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,28 +72,28 @@ public class UserServiceImpl implements UserMapper {
      * 用户注册服务
      * 判断字段合法性
      *
-     * @param user 实体类
+     * @param
      */
 
-    public StatusCode register(String username,String password) {
+    public StatusCode register(String username, String password) {
         StatusCode statusCode;
 
         if (username.length() < usernameMinLength) {
-            statusCode=StatusCode.Fail;
+            statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名长度过短");
             return statusCode;
         }
         if (password.length() > passwordMaxLength) {
-            statusCode=StatusCode.Fail;
+            statusCode = StatusCode.Fail;
             statusCode.setMsg("密码长度错误");
             return statusCode;
         }
         if (userMapper.selectByUserName(username) != null) {
-            statusCode=StatusCode.Fail;
+            statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名重复，请重试");
             return statusCode;
         }
-        User user=new User();
+        User user = new User();
         user.setUsername(username);
         user.setPassword(MD5Util.encode(password));//MD5加密
         userMapper.insertSelective(user);
@@ -106,12 +104,12 @@ public class UserServiceImpl implements UserMapper {
         StatusCode statusCode;
         User userFormDB = userMapper.selectByUserName(user.getUsername());
         if (userFormDB == null) {
-            statusCode= StatusCode.Fail;
+            statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名错误");
             return statusCode;
         }
         if (!user.getPassword().equals(userFormDB.getPassword())) {//密码不匹配
-            statusCode= StatusCode.Fail;
+            statusCode = StatusCode.Fail;
             statusCode.setMsg("密码错误");
             return statusCode;
         }
@@ -186,5 +184,17 @@ public class UserServiceImpl implements UserMapper {
             }
         }
         return imageByte;
+    }
+
+    public StatusCode setInfo(User user, String nickname, String sign) {
+        if (nickname == null & sign == null) {
+            StatusCode statusCode = StatusCode.Fail;
+            statusCode.setMsg("无效值");
+            return statusCode;
+        }
+        user.setNickname(nickname);
+        user.setSign(sign);
+        userMapper.updateByPrimaryKeySelective(user);
+        return StatusCode.Success;
     }
 }

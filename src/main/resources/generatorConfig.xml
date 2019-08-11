@@ -104,7 +104,7 @@
         <!--tables-->
 
         <!--
-        <table tableName="ip_address" domainObjectName="IpAddress"
+        <table tableName="user" domainObjectName="User"
 
                enableCountByExample="false" enableUpdateByExample="false"
 

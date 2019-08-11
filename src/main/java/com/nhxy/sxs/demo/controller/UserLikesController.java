@@ -30,7 +30,7 @@ public class UserLikesController {
     UserLikeServiceImpl userLikeService;
 
 
-    @GetMapping("/all")
+    @GetMapping("/view/all")
     @ApiOperation("查询所有喜欢的景点")
     @CheckToken
     public BaseResponse all(@ApiParam("传入用户token") @RequestParam("token") String token) {
@@ -40,7 +40,7 @@ public class UserLikesController {
         return baseResponse;
     }
 
-    @PostMapping("/add/{view_id}")
+    @PostMapping("/view/add/{view_id}")
     @ApiOperation("增加喜欢的景点接口")
     @CheckToken
     public BaseResponse add(@ApiParam("喜欢的景点id") @PathVariable("view_id") int viewId,
@@ -52,7 +52,7 @@ public class UserLikesController {
     }
 
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/view/delete/{id}")
     @ApiOperation("取消喜欢的景点")
     @CheckToken
     public BaseResponse delete(@ApiParam("表的id") @PathVariable("id") int id,
@@ -62,7 +62,7 @@ public class UserLikesController {
         return baseResponse;
     }
 
-    @GetMapping("/{view_id}")
+    @GetMapping("/view/{view_id}")
     @ApiOperation(value = "查询某个景点是不是在用户喜欢列表中",notes = "true为有，false为没有")
     @CheckToken
     public BaseResponse query(@ApiParam("表的id") @PathVariable("view_id") int viewId,

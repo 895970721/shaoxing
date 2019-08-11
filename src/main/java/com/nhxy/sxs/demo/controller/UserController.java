@@ -118,4 +118,12 @@ public class UserController {
         User user = userService.selectByPrimaryKey(userId);
         return userService.getImage(user);
     }
+    @PostMapping("/setinfo")
+    @CheckToken
+    public BaseResponse setInfo(@RequestParam("token") String token,@RequestParam(value = "nickname",required = false) String nickname,
+                                @RequestParam(value = "sgin",required = false) String sign){
+        User user=tokenUtil.getUser(token);
+        StatusCode statusCode=userService.setInfo(user,nickname,sign);
+        return new BaseResponse(statusCode);
+    }
 }

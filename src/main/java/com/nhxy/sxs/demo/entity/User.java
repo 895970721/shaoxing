@@ -9,11 +9,17 @@ public class User implements Role{
 
     private String fileName;
 
-    public User(Integer id, String username, String password, String fileName) {
+    private String nickname;
+
+    private String sign;
+
+    public User(Integer id, String username, String password, String fileName, String nickname, String sign) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.fileName = fileName;
+        this.nickname = nickname;
+        this.sign = sign;
     }
 
     public User() {
@@ -50,5 +56,21 @@ public class User implements Role{
 
     public void setFileName(String fileName) {
         this.fileName = fileName == null ? null : fileName.trim();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign == null ? null : sign.trim();
     }
 }
