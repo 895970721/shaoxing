@@ -7,6 +7,7 @@ import com.nhxy.sxs.demo.exception.BaseBusinessException;
 import com.nhxy.sxs.demo.exception.UserException;
 import com.nhxy.sxs.demo.mapper.UserMapper;
 import com.nhxy.sxs.demo.utils.MD5Util;
+import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserMapper {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserTokenUtilImpl tokenUtil;
 
     @Value("${systemParam.user.name_min_length}")
     int usernameMinLength;
@@ -191,15 +194,22 @@ public class UserServiceImpl implements UserMapper {
         return imageByte;
     }
 
-    public StatusCode setInfo(User user, String nickname, String sign) {
+    public StatusCode setInfo(String token, String nickname, String sign) {
         if (nickname == null & sign == null) {
             StatusCode statusCode = StatusCode.Fail;
             statusCode.setMsg("无效值");
             return statusCode;
         }
+        User user = tokenUtil.getUser(token);
         user.setNickname(nickname);
         user.setSign(sign);
         userMapper.updateByPrimaryKeySelective(user);
         return StatusCode.Success;
+    }
+
+    public UserDTO getInfo(String token) {
+        User user = tokenUtil.getUser(token);
+        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getNickname(), user.getFileName(), user.getSign());
+        return userDTO;
     }
 }

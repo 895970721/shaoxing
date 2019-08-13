@@ -128,8 +128,16 @@ public class UserController {
     @CheckToken
     public BaseResponse setInfo(@RequestParam("token") String token, @RequestParam(value = "nickname", required = false) String nickname,
                                 @RequestParam(value = "sgin", required = false) String sign) {
-        User user = tokenUtil.getUser(token);
-        StatusCode statusCode = userService.setInfo(user, nickname, sign);
+        StatusCode statusCode = userService.setInfo(token, nickname, sign);
         return new BaseResponse(statusCode);
+    }
+
+    @GetMapping("/getInfo")
+    @CheckToken
+    public BaseResponse getInfo(@RequestParam("token") String token) {
+        UserDTO userDTO = userService.getInfo(token);
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        baseResponse.setData(userDTO);
+        return baseResponse;
     }
 }

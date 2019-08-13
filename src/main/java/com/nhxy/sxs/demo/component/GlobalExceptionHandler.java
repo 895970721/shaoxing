@@ -17,9 +17,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    /**
+     * 只处理业务异常 业务异常类也是自己定义的
+     *
+     * @param e
+     * @return
+     */
     @ExceptionHandler({BaseBusinessException.class})
-    public BaseResponse BusinessExceptionHandler(BaseBusinessException e){
+    public BaseResponse BusinessExceptionHandler(BaseBusinessException e) {
         log.error(e.toString());
-        return new BaseResponse(e.getCode(),e.getMessage());
+        return new BaseResponse(e.getCode(), e.getMessage());
     }
 }
