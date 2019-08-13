@@ -1,8 +1,10 @@
 package com.nhxy.sxs.demo.controller;
 
+import com.nhxy.sxs.demo.entity.LikeFamous;
 import com.nhxy.sxs.demo.entity.LikeView;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.response.BaseResponse;
+import com.nhxy.sxs.demo.service.LikeFamousServiceImpl;
 import com.nhxy.sxs.demo.service.UserLikeServiceImpl;
 import com.nhxy.sxs.demo.utils.CheckToken;
 import io.swagger.annotations.Api;
@@ -28,6 +30,9 @@ import java.util.Map;
 public class UserLikesController {
     @Autowired
     UserLikeServiceImpl userLikeService;
+
+    @Autowired
+    LikeFamousServiceImpl likeFamousService;
 
 
     @GetMapping("/view/all")
@@ -71,6 +76,57 @@ public class UserLikesController {
         BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
         Map result = new HashMap();
         if (likeView == null) {
+            result.put("value", false);
+            baseResponse.setData(result);
+            return baseResponse;
+        } else {
+            result.put("value", true);
+            baseResponse.setData(result);
+            return baseResponse;
+        }
+    }
+
+    @GetMapping("/famous/all")
+    @ApiOperation("查询所有喜欢的名人")
+    @CheckToken
+    public BaseResponse famousAll(@RequestParam("token") String token) {
+        List<LikeFamous> likeFamousList=likeFamousService.all(token);
+        BaseResponse baseResponse=new BaseResponse(StatusCode.Success);
+        baseResponse.setData(likeFamousList);
+        return baseResponse;
+    }
+
+    @PostMapping("/famous/add/{famous_id}")
+    @ApiOperation("增加喜欢的名人接口")
+    @CheckToken
+    public BaseResponse famousAdd(@ApiParam("喜欢的名人id") @PathVariable("famous_id") int famousId,
+                            @ApiParam("传入token") @RequestParam("token") String token,
+                            @ApiParam("名人名字") @RequestParam("famous_title") String famousTitle,
+                            @ApiParam("名人图片") @RequestParam("picture_url") String pictureUrl) {
+        likeFamousService.add(famousId,token,famousTitle,pictureUrl);
+        return new BaseResponse(StatusCode.Success);
+    }
+
+
+    @PostMapping("/famous/delete/{id}")
+    @ApiOperation("取消喜欢的名人")
+    @CheckToken
+    public BaseResponse famousDelete(@ApiParam("喜欢列表的id") @PathVariable("id") int id,
+                               @ApiParam("传入token") @RequestParam("token") String token) {
+        likeFamousService.delete(id);
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        return baseResponse;
+    }
+
+    @GetMapping("/famous/{famous_id}")
+    @ApiOperation(value = "查询某个名人是不是在用户喜欢列表中",notes = "true为有，false为没有")
+    @CheckToken
+    public BaseResponse famousQuery(@ApiParam("名人的id") @PathVariable("famous_id") int famousId,
+                              @ApiParam("传入token") @RequestParam("token") String token) {
+        LikeFamous likeFamous = likeFamousService.selectByFamous(famousId, token);
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        Map result = new HashMap();
+        if (likeFamous == null) {
             result.put("value", false);
             baseResponse.setData(result);
             return baseResponse;

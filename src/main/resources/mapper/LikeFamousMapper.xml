@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhxy.sxs.demo.mapper.LikeFamousMapper" >
+  <resultMap id="BaseResultMap" type="com.nhxy.sxs.demo.entity.LikeFamous" >
+    <constructor >
+      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="famous_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="famous_titile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, famous_id, famous_titile, picture_url, user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from like_famous
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUser" resultMap="BaseResultMap" parameterType="com.nhxy.sxs.demo.entity.User" >
+    select
+    <include refid="Base_Column_List" />
+    from like_famous
+    where user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByLikeFamousSelective" resultMap="BaseResultMap" parameterType="com.nhxy.sxs.demo.entity.LikeFamous" >
+    select
+    <include refid="Base_Column_List" />
+    from like_famous
+    <trim prefix="where"  prefixOverrides="AND" >
+      <if test="id != null" >
+        Id = #{Id,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        AND user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="famousId != null" >
+        AND famous_id = #{famousId,jdbcType=INTEGER}
+      </if>
+      <if test="pictureUrl != null" >
+        AND picture_url = #{pictureUrl,jdbcType=INTEGER}
+      </if>
+      <if test="famousTitile != null" >
+        AND famous_titile = #{famousTitile,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from like_famous
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nhxy.sxs.demo.entity.LikeFamous" >
+    insert into like_famous (Id, famous_id, famous_titile, 
+      picture_url, user_id)
+    values (#{id,jdbcType=INTEGER}, #{famousId,jdbcType=INTEGER}, #{famousTitile,jdbcType=VARCHAR}, 
+      #{pictureUrl,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhxy.sxs.demo.entity.LikeFamous" >
+    insert into like_famous
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="famousId != null" >
+        famous_id,
+      </if>
+      <if test="famousTitile != null" >
+        famous_titile,
+      </if>
+      <if test="pictureUrl != null" >
+        picture_url,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="famousId != null" >
+        #{famousId,jdbcType=INTEGER},
+      </if>
+      <if test="famousTitile != null" >
+        #{famousTitile,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null" >
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhxy.sxs.demo.entity.LikeFamous" >
+    update like_famous
+    <set >
+      <if test="famousId != null" >
+        famous_id = #{famousId,jdbcType=INTEGER},
+      </if>
+      <if test="famousTitile != null" >
+        famous_titile = #{famousTitile,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null" >
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhxy.sxs.demo.entity.LikeFamous" >
+    update like_famous
+    set famous_id = #{famousId,jdbcType=INTEGER},
+      famous_titile = #{famousTitile,jdbcType=VARCHAR},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
