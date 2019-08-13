@@ -1,7 +1,10 @@
 package com.nhxy.sxs.demo.service;
 
+import com.nhxy.sxs.demo.dto.UserDTO;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.StatusCode;
+import com.nhxy.sxs.demo.exception.BaseBusinessException;
+import com.nhxy.sxs.demo.exception.UserException;
 import com.nhxy.sxs.demo.mapper.UserMapper;
 import com.nhxy.sxs.demo.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -75,45 +78,47 @@ public class UserServiceImpl implements UserMapper {
      * @param
      */
 
-    public StatusCode register(String username, String password) {
+    public UserDTO register(String username, String password) throws BaseBusinessException {
         StatusCode statusCode;
 
         if (username.length() < usernameMinLength) {
             statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名长度过短");
-            return statusCode;
+            throw new UserException(statusCode);
         }
         if (password.length() > passwordMaxLength) {
             statusCode = StatusCode.Fail;
             statusCode.setMsg("密码长度错误");
-            return statusCode;
+            throw new UserException(statusCode);
         }
         if (userMapper.selectByUserName(username) != null) {
             statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名重复，请重试");
-            return statusCode;
+            throw new UserException(statusCode);
         }
         User user = new User();
         user.setUsername(username);
         user.setPassword(MD5Util.encode(password));//MD5加密
         userMapper.insertSelective(user);
-        return StatusCode.Success;
+        User userFormDB = userMapper.selectByUserName(username);
+        return new UserDTO(userFormDB.getId(), userFormDB.getUsername(), userFormDB.getNickname(), userFormDB.getFileName(), userFormDB.getSign());
     }
 
-    public StatusCode login(User user) {
+    public UserDTO login(User user) throws BaseBusinessException {
         StatusCode statusCode;
         User userFormDB = userMapper.selectByUserName(user.getUsername());
         if (userFormDB == null) {
             statusCode = StatusCode.Fail;
             statusCode.setMsg("用户名错误");
-            return statusCode;
+            throw new UserException(statusCode);
         }
         if (!user.getPassword().equals(userFormDB.getPassword())) {//密码不匹配
             statusCode = StatusCode.Fail;
             statusCode.setMsg("密码错误");
-            return statusCode;
+            throw new UserException(statusCode);
         }
-        return StatusCode.Success;
+        UserDTO userDto = new UserDTO(userFormDB.getId(), userFormDB.getUsername(), userFormDB.getNickname(), userFormDB.getFileName(), userFormDB.getSign());
+        return userDto;
     }
 
     @Value("${systemParam.user.imagefile.path}")

@@ -1,5 +1,6 @@
 package com.nhxy.sxs.demo.controller;
 
+import com.nhxy.sxs.demo.dto.UserDTO;
 import com.nhxy.sxs.demo.entity.TokenEntity;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.ExpTime;
@@ -46,7 +47,12 @@ public class UserController {
      */
     public BaseResponse register(@RequestParam("user_name") String username,
                                  @RequestParam("pwd") String password) {
-        return new BaseResponse(userService.register(username, Base64Util.decode(password)));
+        UserDTO user = userService.register(username, Base64Util.decode(password));
+        Map data = new LinkedHashMap();
+        data.put("usr", user);
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        baseResponse.setData(data);
+        return baseResponse;
     }
 
     /**
@@ -56,20 +62,19 @@ public class UserController {
     @PostMapping("/login")
     @ApiOperation(httpMethod = "POST", value = "用户登录，返回token")
     public BaseResponse login(@RequestParam("user_name") String username,
-                              @RequestParam("pwd") String password) throws Exception {
+                              @RequestParam("pwd") String password) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(MD5Util.encode(Base64Util.decode(password)));
-        StatusCode statusCode = userService.login(user);
-        if (statusCode.getCode() == 1) {//创建token 封装进cookie；
-            String token = tokenUtil.create(user, ExpTime.OneDay).getToken();
-            BaseResponse baseResponse = new BaseResponse(statusCode);
-            Map data = new LinkedHashMap();
-            data.put("token", token);
-            baseResponse.setData(data);
-            return baseResponse;
-        }
-        return new BaseResponse(statusCode);
+        UserDTO userDTO = userService.login(user);
+        //token
+        String token = tokenUtil.create(user, ExpTime.OneDay).getToken();
+        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+        Map data = new LinkedHashMap();
+        data.put("token", token);
+        data.put("usr", userDTO);
+        baseResponse.setData(data);
+        return baseResponse;
     }
 
     @CheckToken(type = CheckToken.user_tpye)
@@ -118,12 +123,13 @@ public class UserController {
         User user = userService.selectByPrimaryKey(userId);
         return userService.getImage(user);
     }
+
     @PostMapping("/setinfo")
     @CheckToken
-    public BaseResponse setInfo(@RequestParam("token") String token,@RequestParam(value = "nickname",required = false) String nickname,
-                                @RequestParam(value = "sgin",required = false) String sign){
-        User user=tokenUtil.getUser(token);
-        StatusCode statusCode=userService.setInfo(user,nickname,sign);
+    public BaseResponse setInfo(@RequestParam("token") String token, @RequestParam(value = "nickname", required = false) String nickname,
+                                @RequestParam(value = "sgin", required = false) String sign) {
+        User user = tokenUtil.getUser(token);
+        StatusCode statusCode = userService.setInfo(user, nickname, sign);
         return new BaseResponse(statusCode);
     }
 }
