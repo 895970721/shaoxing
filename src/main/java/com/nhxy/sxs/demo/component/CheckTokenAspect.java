@@ -55,8 +55,7 @@ public class CheckTokenAspect {
         }
         String token = (String) args[tokenParamPoint];
         if (!tokenUtil.verifie(token)) {
-            log.debug("验证错误");
-            return new BaseResponse(StatusCode.VeritfFail);
+            return new BaseResponse(StatusCode.VerifyFail);
         }
         result = joinPoint.proceed();//方法执行。并且受到方法返回值
         return result;

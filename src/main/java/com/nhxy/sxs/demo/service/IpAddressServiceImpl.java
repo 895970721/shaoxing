@@ -74,7 +74,7 @@ public class IpAddressServiceImpl implements IpAddressMapper {
                 ipAddress.setLongitude(IpUtil.getLongitude(databaseReader, ip).toString());
                 ipAddressMapper.insertSelective(ipAddress);
             } catch (IOException e) {
-                log.debug(e.toString());
+                log.error("ip数据库读取错误(.mmdb数据库) "+e.toString());
             }
         }
         return ipAddress.getAddress();

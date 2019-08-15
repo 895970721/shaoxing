@@ -2,6 +2,7 @@ package com.nhxy.sxs.demo.exception;
 
 import com.nhxy.sxs.demo.enums.StatusCode;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * <p>Class: BaseBusinessException</p>
@@ -11,7 +12,7 @@ import lombok.Data;
  * @version 1.0.0
  * @since 2019/8/13 9:57
  */
-@Data
+
 public class BaseBusinessException extends RuntimeException {
     private Integer code;
 
@@ -22,6 +23,14 @@ public class BaseBusinessException extends RuntimeException {
 
     public BaseBusinessException(int code, String msg) {
         super(msg);
+        this.code = code;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
         this.code = code;
     }
 }

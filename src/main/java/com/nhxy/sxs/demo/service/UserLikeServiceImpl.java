@@ -79,8 +79,7 @@ public class UserLikeServiceImpl implements LikeViewMapper {
         //首先判断数据库有没有相同记录
         if (likeViewMapper.selectByLikeViewSelective(likeView) .size()!=0 ) {
             Object o=likeViewMapper.selectByLikeViewSelective(likeView);
-            StatusCode statusCode = StatusCode.Fail;
-            statusCode.setMsg("此条记录已经存在于数据库");
+            StatusCode statusCode = StatusCode.ExistFail;
             return statusCode;
         }
         //再插入
@@ -104,15 +103,13 @@ public class UserLikeServiceImpl implements LikeViewMapper {
         //先判断此条记录是否存在
         LikeView likeViewFormDB = likeViewMapper.selectByPrimaryKey(likeView.getId());
         if (likeViewFormDB == null) {
-            StatusCode statusCode = StatusCode.Fail;
-            statusCode.setMsg("数据不存在，删除失败");
+            StatusCode statusCode = StatusCode.NoExistFail;
             return statusCode;
         }
         //如果存在则删除
         int i = likeViewMapper.deleteByPrimaryKey(likeView.getId());
         if (i == 1) {
-            StatusCode statusCode = StatusCode.Success;
-            statusCode.setMsg("删除成功");
+            StatusCode statusCode = StatusCode.DeleteSuccess;
             return statusCode;
         } else {
             return StatusCode.Fail;

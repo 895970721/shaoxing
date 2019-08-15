@@ -64,7 +64,7 @@ public class UserTokenUtilImpl implements TokenUtil {
             DecodedJWT jwt1 = verifie.verify(token);
         } catch (Exception e) {
             if (e instanceof JWTVerificationException) {
-                logger.debug("验证失败", e);
+                logger.error("验证失败"+e.toString());
             } else logger.error("未处理的错误", e);
             return false;
         }

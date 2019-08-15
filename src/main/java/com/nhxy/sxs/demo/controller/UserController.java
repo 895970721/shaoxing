@@ -5,6 +5,7 @@ import com.nhxy.sxs.demo.entity.TokenEntity;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.ExpTime;
 import com.nhxy.sxs.demo.enums.StatusCode;
+import com.nhxy.sxs.demo.exception.BaseBusinessException;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.UserServiceImpl;
 import com.nhxy.sxs.demo.utils.Base64Util;
@@ -13,6 +14,7 @@ import com.nhxy.sxs.demo.utils.MD5Util;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 @RestController()
 @RequestMapping("/user")
+@Slf4j
 @Api(value = "user", tags = "用户操作接口")
 public class UserController {
     @Autowired
@@ -47,12 +50,18 @@ public class UserController {
      */
     public BaseResponse register(@RequestParam("user_name") String username,
                                  @RequestParam("pwd") String password) {
-        UserDTO user = userService.register(username, Base64Util.decode(password));
-        Map data = new LinkedHashMap();
-        data.put("usr", user);
-        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
-        baseResponse.setData(data);
-        return baseResponse;
+        try {
+            UserDTO user = userService.register(username, Base64Util.decode(password));
+
+            Map data = new LinkedHashMap();
+            data.put("usr", user);
+            BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+            baseResponse.setData(data);
+            return baseResponse;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            log.error("Base64解密错误:" + e.getMessage());
+            throw new BaseBusinessException(StatusCode.PasswordError);
+        }
     }
 
     /**
@@ -63,18 +72,23 @@ public class UserController {
     @ApiOperation(httpMethod = "POST", value = "用户登录，返回token")
     public BaseResponse login(@RequestParam("user_name") String username,
                               @RequestParam("pwd") String password) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(MD5Util.encode(Base64Util.decode(password)));
-        UserDTO userDTO = userService.login(user);
-        //token
-        String token = tokenUtil.create(user, ExpTime.OneDay).getToken();
-        BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
-        Map data = new LinkedHashMap();
-        data.put("token", token);
-        data.put("usr", userDTO);
-        baseResponse.setData(data);
-        return baseResponse;
+        try {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(MD5Util.encode(Base64Util.decode(password)));
+            UserDTO userDTO = userService.login(user);
+            //token
+            String token = tokenUtil.create(user, ExpTime.OneDay).getToken();
+            BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
+            Map data = new LinkedHashMap();
+            data.put("token", token);
+            data.put("usr", userDTO);
+            baseResponse.setData(data);
+            return baseResponse;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            log.error("Base64解密错误: " + e.getMessage());
+            throw new BaseBusinessException(StatusCode.PasswordError);
+        }
     }
 
     @CheckToken(type = CheckToken.user_tpye)

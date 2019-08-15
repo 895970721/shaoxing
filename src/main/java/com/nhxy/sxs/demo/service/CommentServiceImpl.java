@@ -71,12 +71,12 @@ public class CommentServiceImpl implements CommentMapper {
 
     public boolean add(Comment comment) throws Exception {
         if (comment.getContent().length() > 255) {
-            log.debug("评论字数过长");
+            log.error("评论字数过长");
             throw new Exception("评论字数过长");
         }
         Comment querycomment = commentMapper.selectByUserIdAndViewId(comment.getUserId(), comment.getViewId());
         if (querycomment != null) {
-            log.debug("用户已经在此景区评论过了");
+            log.error("用户已经在此景区评论过了");
             throw new Exception("用户已经在此景区评论过了");
         }
         commentMapper.insertSelective(comment);

@@ -4,6 +4,7 @@ import com.nhxy.sxs.demo.dto.UserDTO;
 import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.exception.BaseBusinessException;
+import com.nhxy.sxs.demo.exception.FileException;
 import com.nhxy.sxs.demo.exception.UserException;
 import com.nhxy.sxs.demo.mapper.UserMapper;
 import com.nhxy.sxs.demo.utils.MD5Util;
@@ -85,18 +86,15 @@ public class UserServiceImpl implements UserMapper {
         StatusCode statusCode;
 
         if (username.length() < usernameMinLength) {
-            statusCode = StatusCode.Fail;
-            statusCode.setMsg("用户名长度过短");
+            statusCode = StatusCode.UserNameLengthError;
             throw new UserException(statusCode);
         }
         if (password.length() > passwordMaxLength) {
-            statusCode = StatusCode.Fail;
-            statusCode.setMsg("密码长度错误");
+            statusCode = StatusCode.PasswordLengthError;
             throw new UserException(statusCode);
         }
         if (userMapper.selectByUserName(username) != null) {
-            statusCode = StatusCode.Fail;
-            statusCode.setMsg("用户名重复，请重试");
+            statusCode = StatusCode.UserNameError;
             throw new UserException(statusCode);
         }
         User user = new User();
@@ -111,13 +109,11 @@ public class UserServiceImpl implements UserMapper {
         StatusCode statusCode;
         User userFormDB = userMapper.selectByUserName(user.getUsername());
         if (userFormDB == null) {
-            statusCode = StatusCode.Fail;
-            statusCode.setMsg("用户名错误");
+            statusCode = StatusCode.UserNameError;
             throw new UserException(statusCode);
         }
         if (!user.getPassword().equals(userFormDB.getPassword())) {//密码不匹配
-            statusCode = StatusCode.Fail;
-            statusCode.setMsg("密码错误");
+            statusCode = StatusCode.PasswordError;
             throw new UserException(statusCode);
         }
         UserDTO userDto = new UserDTO(userFormDB.getId(), userFormDB.getUsername(), userFormDB.getNickname(), userFormDB.getFileName(), userFormDB.getSign());
@@ -163,13 +159,13 @@ public class UserServiceImpl implements UserMapper {
 
     public byte[] getImage(User user) {
         if (user == null) {
-            log.debug("请求的用户id不存在");
+            log.error("请求的用户id不存在");
             byte[] bytes = {0};
             return bytes;//用户id不存在时候
         }
         String fileName = user.getFileName();
         if (fileName == "") {
-            log.debug("请求的用户的图片不存在");
+            log.error("请求的用户的图片不存在");
             byte[] bytes = {0};
             return bytes;//图片不存在时候
         }
@@ -182,6 +178,7 @@ public class UserServiceImpl implements UserMapper {
             is.read(imageByte);
         } catch (FileNotFoundException e) {
             log.error(e.toString());
+            throw new FileException(StatusCode.Fail);
         } catch (IOException e) {
             log.error(e.toString());
         } finally {
@@ -196,8 +193,7 @@ public class UserServiceImpl implements UserMapper {
 
     public StatusCode setInfo(String token, String nickname, String sign) {
         if (nickname == null & sign == null) {
-            StatusCode statusCode = StatusCode.Fail;
-            statusCode.setMsg("无效值");
+            StatusCode statusCode = StatusCode.ParamFail;
             return statusCode;
         }
         User user = tokenUtil.getUser(token);

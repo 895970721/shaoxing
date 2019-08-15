@@ -1,5 +1,7 @@
 package com.nhxy.sxs.demo.utils;
 
+import com.nhxy.sxs.demo.enums.StatusCode;
+import com.nhxy.sxs.demo.exception.FileException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -30,14 +32,19 @@ public class FileIOUtils {
             }
             FileContent = sBuilder.toString().replace(" ", "").replace("\n", "\n\t\t\t\t");
         } catch (FileNotFoundException e) {
-            log.error("文件不存在或者文件不可读或者文件是目录");
+            log.error("文件不存在或者文件不可读或者文件是目录 "+e.getMessage());
+            throw new FileException(StatusCode.Fail);
         } catch (IOException e) {
-            log.error("读取过程存在异常");
+            log.error("读取过程存在异常"+e.getMessage());
+            throw new FileException(StatusCode.Fail);
         } finally {
             try {
                 fis.close();
             } catch (IOException e) {
                 log.error("文件关闭失败");
+            } catch (NullPointerException e){
+                log.error("文件不存在 "+e.getMessage());
+                throw new FileException(StatusCode.Fail);
             }
         }
         return FileContent;
