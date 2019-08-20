@@ -22,6 +22,11 @@
     from access_log
     where Id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from access_log
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from access_log
     where Id = #{id,jdbcType=INTEGER}

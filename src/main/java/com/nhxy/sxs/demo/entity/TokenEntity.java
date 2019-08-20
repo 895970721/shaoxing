@@ -18,8 +18,8 @@ public class TokenEntity {
     Date createDate;//创建时间
     Date expiresDate;//过期时间
 
-    public TokenEntity() {
-        this.createDate = new Date();
+    public TokenEntity(Date createDate) {
+        this.createDate = createDate;
     }
 
     public TokenEntity(String username, String token, Date expiresDate) {
@@ -29,7 +29,7 @@ public class TokenEntity {
         this.expiresDate = expiresDate;
     }
 
-    public TokenEntity(String username, String token,Date createDate, Date expiresDate) {
+    public TokenEntity(String username, String token, Date createDate, Date expiresDate) {
         this.username = username;
         this.token = token;
         this.createDate = createDate;

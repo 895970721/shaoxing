@@ -42,7 +42,7 @@ public class UserTokenUtilImpl implements TokenUtil {
 
     @Override
     public TokenEntity create(Role role, ExpTime expTime) {
-        TokenEntity userTokenEntity = new TokenEntity();//此时初始化了createDate
+        TokenEntity userTokenEntity = new TokenEntity(new Date());//此时初始化了createDate
         create0(role, userTokenEntity, expTime);
         return userTokenEntity;
     }
@@ -103,11 +103,11 @@ public class UserTokenUtilImpl implements TokenUtil {
     private TokenEntity create0(Role role, TokenEntity tokenEntity, ExpTime expTime) {
         try {
             String token = JWT.create()
-                    .withExpiresAt(expTime.getExp())//设置默认过期时间
+                    .withExpiresAt(new Date(System.currentTimeMillis()+expTime.getExp()))//设置默认过期时间
                     .withClaim("username", role.getUsername())
                     .withClaim("createDate", tokenEntity.getCreateDate())
                     .sign(Algorithm.HMAC256(role.getPassword()));
-            tokenEntity.setExpiresDate(expTime.getExp());
+            tokenEntity.setExpiresDate(new Date(System.currentTimeMillis()+expTime.getExp()));
             tokenEntity.setUsername(role.getUsername());
             tokenEntity.setToken(token);
         } catch (Exception e) {

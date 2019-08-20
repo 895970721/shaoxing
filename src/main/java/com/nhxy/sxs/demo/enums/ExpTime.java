@@ -1,7 +1,5 @@
 package com.nhxy.sxs.demo.enums;
 
-import java.util.Date;
-
 /**
  * <p>enum: expTime</p>
  *
@@ -10,22 +8,18 @@ import java.util.Date;
  * @since 2019/7/19 13:23
  */
 public enum ExpTime {
-    OneDay(new Date(System.currentTimeMillis() + 86400000L)),
-    TwoDay(new Date(System.currentTimeMillis() + 172800000L)),
-    OneWeek(new Date(System.currentTimeMillis() + 604800000L)),
-    OneMonth(new Date(System.currentTimeMillis() + 2592000000L));
-    private Date exp;
+    OneDay(86400000L),
+    TwoDay(172800000L),
+    OneWeek(604800000L),
+    OneMonth(2592000000L);
+    private Long exp;
 
-    ExpTime(Date exp) {
+    ExpTime(Long exp) {
         this.exp = exp;
     }
 
-    public Date getExp() {
+    public Long getExp() {
         return exp;
-    }
-
-    public void setExp(Date exp) {
-        this.exp = exp;
     }
 
 
