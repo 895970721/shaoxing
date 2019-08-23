@@ -27,7 +27,8 @@ file:
 systemParam:
   ip-database-path: "/home/common/GeoLite2-City.mmdb"
   user:
-    name_min_length: 6
+    name_min_length: 4
+    name_max_length: 16
     password_max_length: 32
     imagefile:
       path: "/home/shaoxing/image/"

@@ -26,7 +26,8 @@ file:
 systemParam:
   ip-database-path: "C:\\Users\\GodDai\\Downloads\\GeoLite2-City_20190806\\GeoLite2-City_20190806\\GeoLite2-City.mmdb"
   user:
-    name_min_length: 6
+    name_min_length: 4
+    name_max_length: 16
     password_max_length: 32
     imagefile:
       path: "D:\\shaoxing\\image\\"

@@ -12,6 +12,7 @@ import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,8 @@ public class UserServiceImpl implements UserMapper {
 
     @Value("${systemParam.user.name_min_length}")
     int usernameMinLength;
+    @Value("${systemParam.user.name_max_length}")
+    int usernameMaxLength;
     @Value("${systemParam.user.password_max_length}")
     int passwordMaxLength;
 
@@ -85,7 +88,11 @@ public class UserServiceImpl implements UserMapper {
     public UserDTO register(String username, String password) throws BaseBusinessException {
         StatusCode statusCode;
 
-        if (username.length() < usernameMinLength) {
+        if (username.length() < usernameMinLength) {//限制用户名最小长度
+            statusCode = StatusCode.UserNameLengthError;
+            throw new UserException(statusCode);
+        }
+        if (username.length() > usernameMaxLength) {//限制用户名长度
             statusCode = StatusCode.UserNameLengthError;
             throw new UserException(statusCode);
         }
@@ -101,8 +108,12 @@ public class UserServiceImpl implements UserMapper {
         user.setUsername(username);
         user.setPassword(MD5Util.encode(password));//MD5加密
         userMapper.insertSelective(user);
-        User userFormDB = userMapper.selectByUserName(username);
-        return new UserDTO(userFormDB.getId(), userFormDB.getUsername(), userFormDB.getNickname(), userFormDB.getFileName(), userFormDB.getSign());
+        try {
+            User userFormDB = userMapper.selectByUserName(username);
+            return new UserDTO(userFormDB.getId(), userFormDB.getUsername(), userFormDB.getNickname(), userFormDB.getFileName(), userFormDB.getSign());
+        }catch (DataIntegrityViolationException exception){
+            throw new UserException(StatusCode.ParamFail);
+        }
     }
 
     public UserDTO login(User user) throws BaseBusinessException {
