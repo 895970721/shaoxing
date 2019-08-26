@@ -6,6 +6,7 @@ public enum StatusCode {
     Fail(0, "数据获取失败"),
     ParamFail(0, "参数错误"),
     VerifyFail(0, "验证失败"),
+    ResignFail(0, "重签失败,可能是因为您太长久未登录"),
     DeleteFail(0,"删除错误"),
     ExistFail(0,"此条记录已经存在于数据库"),
     NoExistFail(0,"此条记录不存在"),

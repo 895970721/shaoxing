@@ -6,6 +6,7 @@ import com.nhxy.sxs.demo.entity.User;
 import com.nhxy.sxs.demo.enums.ExpTime;
 import com.nhxy.sxs.demo.enums.StatusCode;
 import com.nhxy.sxs.demo.exception.BaseBusinessException;
+import com.nhxy.sxs.demo.exception.UserException;
 import com.nhxy.sxs.demo.response.BaseResponse;
 import com.nhxy.sxs.demo.service.UserServiceImpl;
 import com.nhxy.sxs.demo.utils.Base64Util;
@@ -14,11 +15,13 @@ import com.nhxy.sxs.demo.utils.MD5Util;
 import com.nhxy.sxs.demo.utils.UserTokenUtilImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -152,6 +155,19 @@ public class UserController {
         UserDTO userDTO = userService.getInfo(token);
         BaseResponse baseResponse = new BaseResponse(StatusCode.Success);
         baseResponse.setData(userDTO);
+        return baseResponse;
+    }
+    @PostMapping("/refresh")
+    @ApiOperation("刷新token")
+    public BaseResponse refresh(@ApiParam("旧token") @RequestParam("token") String token){
+        String newToken=tokenUtil.reSign(token,ExpTime.OneDay);
+        if (newToken==null){
+            throw new UserException(StatusCode.ResignFail);
+        }
+        Map result=new HashMap();
+        result.put("token",newToken);
+        BaseResponse baseResponse=new BaseResponse(StatusCode.Success);
+        baseResponse.setData(result);
         return baseResponse;
     }
 }
