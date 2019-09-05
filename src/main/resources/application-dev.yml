@@ -16,6 +16,15 @@ spring:
         max-idle: 5
         min-idle: 0
     timeout: 10000
+
+  boot:
+    admin:
+      url: http://localhost:8000
+#关闭spring admin 安全验证
+management:
+  security:
+    enabled: false:
+
 server:
   port: "@port@"
   #从pom中取出port号
