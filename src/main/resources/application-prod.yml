@@ -16,9 +16,11 @@ spring:
         max-idle: 5
         min-idle: 0
     timeout: 10000
+
   boot:
     admin:
-      url: "http://localhost:8000"
+      client:
+        url: "http://localhost:8000"
 #关闭spring admin 安全验证
 management:
   endpoints:
