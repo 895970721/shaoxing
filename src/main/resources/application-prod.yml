@@ -21,7 +21,7 @@ spring:
     admin:
       client:
         url: "http://localhost:8000"
-#关闭spring admin 安全验证
+
 management:
   endpoints:
     web:

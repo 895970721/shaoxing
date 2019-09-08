@@ -1,7 +1,11 @@
 spring:
   profiles:
     active: dev
-
+  boot:
+    admin:
+      client:
+        instance:
+          name: shaoxing
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
