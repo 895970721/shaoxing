@@ -27,6 +27,11 @@ management:
     web:
       exposure:
         include: "*"
+    health:
+      sensitive: false #关闭过滤敏感信息
+  endpoint:
+    health:
+      show-details: ALWAYS  #显示详细信息
 
 server:
   port: "@port@"
